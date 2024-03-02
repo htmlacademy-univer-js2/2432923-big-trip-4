@@ -19,7 +19,7 @@ export default class BoardPresenter {
     render(new PointEditView(), this.eventListComponent.getElement());
 
     for (let i = 0; i < POINT_COUNT; i++) {
-      render(new PointView(), this.eventListComponent.getElement())
+      render(new PointView(), this.eventListComponent.getElement());
 
     }
   }
