@@ -1,5 +1,5 @@
-import { createTripInfoTemplate } from "../templates/trip-info-template.js";
-import { createElement } from "../render.js";
+import { createTripInfoTemplate } from '../templates/trip-info-template.js';
+import { createElement } from '../render.js';
 
 export default class TripInfoView {
   getTemplate() {

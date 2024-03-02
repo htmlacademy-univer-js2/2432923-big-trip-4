@@ -1,5 +1,5 @@
-import { createSortTemplate } from "../templates/sort-template.js";
-import { createElement } from "../render.js";
+import { createSortTemplate } from '../templates/sort-template.js';
+import { createElement } from '../render.js';
 
 export default class SortView {
   getTemplate() {

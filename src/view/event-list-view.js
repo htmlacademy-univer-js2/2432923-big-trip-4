@@ -1,5 +1,5 @@
-import { createEventListTemplate } from "../templates/event-list-template.js";
-import { createElement } from "../render.js";
+import { createEventListTemplate } from '../templates/event-list-template.js';
+import { createElement } from '../render.js';
 
 export default class EventListView {
   getTemplate() {
