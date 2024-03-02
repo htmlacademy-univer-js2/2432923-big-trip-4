@@ -160,5 +160,5 @@ export function createPointEditTemplate() {
       </section>
     </section>
   </form>
-</li>`
+</li>`;
 }
