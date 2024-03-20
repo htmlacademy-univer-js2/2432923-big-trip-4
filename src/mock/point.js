@@ -90,7 +90,7 @@ const genereatePoint = () => {
     dateTo: date.to,
     destination: getDestination(identity),
     isFavorite: Boolean(getRandomInteger(1)),
-    offers: ,
+    //offers: ,
     // offers: Array.from({ length: getRandomInteger(OFFERS.length)}, () => getRandomArrayElement(OFFERS)),
     type: getRandomArrayElement(POINT_TYPES)
   }
