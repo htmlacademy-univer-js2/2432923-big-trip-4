@@ -12,13 +12,48 @@
 //   }
 // ]
 
-import { getRandomArrayElement } from "../utils"
-import { OFFERS, PRICES } from "../consts"
+// import { getRandomArrayElement } from "../utils"
+// import { OFFERS, PRICES } from "../consts"
 
-export const generateOffer = (index) => {
+// export const generateOffer = (index) => {
+//   return {
+//     id: index,
+//     title: getRandomArrayElement(OFFERS),
+//     price: getRandomArrayElement(PRICES),
+//   }
+// }
+
+
+// const POINT_TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
+// const OFFERS = ['Add luggage', 'Switch to comfort class', 'Add meal', 'Choose seats', 'Travel by train'];
+// const PRICES = [1000, 1200, 80, 90, 50, 600];
+// const getRandomArrayElement = (items) => {
+//   return items[Math.floor(Math.random() * items.length)];
+// }
+// const getRandomInteger = (max) =>{
+//   return Math.round(max * Math.random());
+// }
+
+import { POINT_TYPES, OFFERS, PRICES } from "../consts"
+import { getRandomArrayElement, getRandomInteger } from "../utils"
+
+const generateOffer = (index) => {
   return {
     id: index,
     title: getRandomArrayElement(OFFERS),
     price: getRandomArrayElement(PRICES),
   }
 }
+
+const generateOffersSet = () => {
+  return Array.from({ length: getRandomInteger(OFFERS.length)}, (_, index) => generateOffer(index))
+}
+
+const generateOffersSetByPointType = () => {
+  return POINT_TYPES.map((pointType) => ({
+    type: pointType,
+    offers: generateOffersSet(),
+  }))
+}
+
+console.log(generateOffersSetByPointType());
