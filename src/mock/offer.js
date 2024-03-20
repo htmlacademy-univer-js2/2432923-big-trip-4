@@ -45,15 +45,15 @@ const generateOffer = (index) => {
   }
 }
 
-const generateOffersSet = () => {
+export const generateOffersSet = () => {
   return Array.from({ length: getRandomInteger(OFFERS.length)}, (_, index) => generateOffer(index))
 }
 
-const generateOffersSetByPointType = () => {
-  return POINT_TYPES.map((pointType) => ({
-    type: pointType,
-    offers: generateOffersSet(),
-  }))
-}
+// const generateOffersSetByPointType = () => {
+//   return POINT_TYPES.map((pointType) => ({
+//     type: pointType,
+//     offers: generateOffersSet(),
+//   }))
+// }
 
-console.log(generateOffersSetByPointType());
+//console.log(generateOffersSetByPointType());
