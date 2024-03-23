@@ -25,7 +25,7 @@ export default class BoardPresenter {
     render(new PointEditView(this.tripPoints[0]), this.pointList.getElement());
 
     for (let i = 1; i < this.tripPoints.length; i++) {
-      render(new PointView({ point: this.tripPoints[i] }), this.pointList.getElement());
+      render(new PointView(this.tripPoints[i]), this.pointList.getElement());
     }
   }
 }
