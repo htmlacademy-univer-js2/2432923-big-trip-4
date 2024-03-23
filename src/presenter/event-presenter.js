@@ -11,11 +11,12 @@ export default class BoardPresenter {
 
   constructor({container, pointsModel}) {
     this.container = container;
-    this.pointsModel = pointsModel
+    this.pointsModel = pointsModel;
   }
 
   init() {
     this.tripPoints = [...this.pointsModel.getPoints()];
+    // eslint-disable-next-line no-console
     console.log(this.tripPoints[0]);
     render(this.pointList, this.container.events);
     render(new SortView(), this.container.events);
