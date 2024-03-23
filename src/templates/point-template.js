@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 function createOffersList (offers){
   return offers.map((offer) => `<li class="event__offer">
   <span class="event__offer-title">${offer.title}</span>
@@ -9,8 +8,6 @@ function createOffersList (offers){
 
 export function createPointTemplate (point){
   const { basePrice, destination, isFavorite, type, offers } = point;
-  console.log(point);
-  console.log(destination.name);
   const favouriteClassname = isFavorite ? 'event__favorite-btn--active' : '';
 
   return `<li class="trip-events__item">
@@ -19,7 +16,7 @@ export function createPointTemplate (point){
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${type}.png" alt="Event ${type} icon">
     </div>
-    <h3 class="event__title">${type} ${point.destination.name}</h3>
+    <h3 class="event__title">${type} ${destination.name}</h3>
     <div class="event__schedule">
       <p class="event__time">
         <time class="event__start-time" datetime="2019-03-18T10:30">10:30</time>
