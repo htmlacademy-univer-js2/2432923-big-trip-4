@@ -1,22 +1,29 @@
 import { getRandomArrayElement, getRandomInteger } from "../utils.js"
-import { DESTINATIONS, DATE, POINT_TYPES, PRICES } from "../consts.js"
+import { DESTINATIONS, DATE, POINT_TYPES, PRICE } from "../consts.js"
 import { getDestination } from "./destination.js";
-import { generateOffersSet } from "./offer.js";
+import { generateOffersByType, getOffersByType } from "./offer.js";
 
 export const generatePoint = () => {
-  const identity = getRandomInteger(DESTINATIONS.length);
+  const pointId = getRandomInteger(DESTINATIONS.length - 1);
   const date = getRandomArrayElement(DATE);
+  const pointType = getRandomArrayElement(POINT_TYPES);
+  const offersByType = generateOffersByType();
+  // console.log(offersByType);
+  const offersByCurrentPointType = (offersByType.find((offer) => offer.type === pointType).offers)
+  //.map((offer) => offer.id);
+  // console.log(offersByCurrentPointType);
 
   return {
-    id: identity,
-    basePrice: getRandomArrayElement(PRICES),
+    id: pointId,
+    basePrice: getRandomInteger(PRICE.min, PRICE.max),
     dateFrom: date.from,
     dateTo: date.to,
-    destination: getDestination(identity),
+    destination: getDestination(pointId),
     isFavorite: Boolean(getRandomInteger(1)),
-    offers: generateOffersSet(),
-    type: getRandomArrayElement(POINT_TYPES)
+    offers: offersByCurrentPointType,
+    // .map((offer) => offer.id),
+    type: pointType
   }
 }
 
-console.log(generatePoint());
+//console.log(generatePoint());

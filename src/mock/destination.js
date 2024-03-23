@@ -1,5 +1,5 @@
 import { DESCRIPTIONS, DESTINATIONS } from "../consts";
-import { getRandomArrayElement } from "../utils";
+import { getRandomArrayElement, getRandomInteger } from "../utils";
 
 // const getDestination = (destination, index) => {
 //   return {
@@ -28,9 +28,17 @@ export const getDestination = (index) => {
     name: DESTINATIONS[index],
     pictures: [
       {
-        src: `https://loremflickr.com/248/152?random=${ index }`,
+        src: `https://loremflickr.com/248/152?random=${ getRandomInteger(100) }`,
+        description: getRandomArrayElement(DESCRIPTIONS)
+      },
+      {
+        src: `https://loremflickr.com/248/152?random=${ getRandomInteger(100) }`,
         description: getRandomArrayElement(DESCRIPTIONS)
       }
     ]
   }
 }
+
+// const generateDestinations = () => {
+//   return DESTINATIONS.map((destination, index) => getDestination(destination, index));
+// }

@@ -1,5 +1,5 @@
 export const POINT_COUNT = 3;
-export const POINT_TYPES = ['Taxi', 'Bus', 'Train', 'Ship', 'Drive', 'Flight', 'Check-in', 'Sightseeing', 'Restaurant'];
+export const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
 export const DESTINATIONS = ['Amsterdam', 'Chamonix', 'Geneva', 'Paris', 'Saint Petersburg', 'Vienna'];
 export const FILTER_TYPES = ['everything', 'future', 'present', 'past'];
 export const OFFERS = ['Add luggage', 'Switch to comfort class', 'Add meal', 'Choose seats', 'Travel by train'];
@@ -30,4 +30,7 @@ export const DATE = [
     to: '2024-03-19T19:00'
   }
 ]
-export const PRICES = [1000, 1200, 80, 90, 50, 600];
+export const PRICE = {
+  min: 40,
+  max: 3000
+};

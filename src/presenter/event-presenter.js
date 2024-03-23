@@ -16,11 +16,12 @@ export default class BoardPresenter {
 
   init() {
     this.tripPoints = [...this.pointsModel.getPoints()];
+    console.log(this.tripPoints[0]);
     render(this.pointList, this.container.events);
     render(new SortView(), this.container.events);
     render(new FilterView(), this.container.filter);
     render(new TripInfoView(), this.container.tripInfo, RenderPosition.AFTERBEGIN);
-    render(new PointEditView({ point: this.tripPoints[0] }), this.pointList.getElement());
+    render(new PointEditView(this.tripPoints[0]), this.pointList.getElement());
 
     for (let i = 1; i < this.tripPoints.length; i++) {
       render(new PointView({ point: this.tripPoints[i] }), this.pointList.getElement());
