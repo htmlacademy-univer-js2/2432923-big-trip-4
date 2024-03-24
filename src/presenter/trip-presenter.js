@@ -16,16 +16,22 @@ export default class BoardPresenter {
 
   init() {
     this.tripPoints = [...this.pointsModel.getPoints()];
-    // eslint-disable-next-line no-console
-    console.log(this.tripPoints[0]);
     render(this.pointList, this.container.events);
     render(new SortView(), this.container.events);
     render(new FilterView(), this.container.filter);
-    render(new TripInfoView(), this.container.tripInfo, RenderPosition.AFTERBEGIN);
-    render(new PointEditView(this.tripPoints[0]), this.pointList.getElement());
+    render(new TripInfoView({points: this.tripPoints}), this.container.tripInfo, RenderPosition.AFTERBEGIN);
+    render(new PointEditView({
+      point: this.tripPoints[0],
+      offersByPointType: this.pointsModel.offersModel.getOffersByType(this.tripPoints[0].type)
+    }),
+    this.pointList.getElement());
 
     for (let i = 1; i < this.tripPoints.length; i++) {
-      render(new PointView(this.tripPoints[i]), this.pointList.getElement());
+      render(new PointView({
+        point: this.tripPoints[i],
+        offersByPointType: this.pointsModel.offersModel.getOffersByType(this.tripPoints[0].type)
+      }),
+      this.pointList.getElement());
     }
   }
 }

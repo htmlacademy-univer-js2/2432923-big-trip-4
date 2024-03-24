@@ -1,13 +1,17 @@
 import { POINT_TYPES, OFFERS, PRICE } from '../consts';
 import { getRandomArrayElement, getRandomInteger } from '../utils';
 
-const generateOffer = (index) => ({
-  id: index,
+const generateOffer = () => ({
+  id: crypto.randomUUID(),
   title: getRandomArrayElement(OFFERS),
   price: getRandomInteger(PRICE.min, PRICE.max),
 });
 
-export const generateOffersByType = () => POINT_TYPES.map((type) => ({
+const offersByType = POINT_TYPES.map((type) => ({
   type,
-  offers: Array.from({ length: getRandomInteger(OFFERS.length)}, (_, index) => generateOffer(index))
+  offers: Array.from({ length: getRandomInteger(OFFERS.length)}, generateOffer)
 }));
+
+export const getOffersByType = () => offersByType;
+
+export const getOfferByCurrentPointType = (type) => offersByType.find((offer) => offer.type === type).offers;

@@ -6,9 +6,15 @@ const createPicture = () => ({
   description: getRandomArrayElement(DESCRIPTIONS)
 });
 
-export const getDestination = (index) => ({
+const getDestination = (destination, index) => ({
   id: index,
   description: getRandomArrayElement(DESCRIPTIONS),
-  name: DESTINATIONS[index],
+  name: destination,
   pictures: Array.from({ length: getRandomInteger(5)}, createPicture)
 });
+
+const destinations = DESTINATIONS.map((destination, index) => getDestination(destination, index));
+
+export const getDestinations = () => destinations;
+
+export const getRandomDestination = () => getRandomArrayElement(destinations);

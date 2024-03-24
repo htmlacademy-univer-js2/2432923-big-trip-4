@@ -1,5 +1,7 @@
 import PointsModel from './model/point-model';
-import BoardPresenter from './presenter/event-presenter';
+import TripPresenter from './presenter/trip-presenter';
+import DestinationModel from './model/destination-model';
+import OffersModel from './model/offer-model';
 
 const filterContainer = document.querySelector('.trip-controls__filters');
 const tripInfoContainer = document.querySelector('.trip-main');
@@ -11,7 +13,9 @@ const container = {
   events: eventsContainer
 };
 
-const pointsModel = new PointsModel();
-const boardPresenter = new BoardPresenter({container: container, pointsModel: pointsModel});
+const destinationModel = new DestinationModel();
+const offersModel = new OffersModel();
+const pointsModel = new PointsModel({destinationModel, offersModel});
+const tripPresenter = new TripPresenter({container: container, pointsModel: pointsModel});
 
-boardPresenter.init();
+tripPresenter.init();

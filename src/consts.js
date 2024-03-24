@@ -40,3 +40,18 @@ export const PRICE = {
   min: 40,
   max: 3000
 };
+export const DEFAULT_POINT = {
+  id: null,
+  type: null,
+  price: null,
+  date: null,
+  destination: null,
+  offer: null,
+  isFavorite: false,
+};
+export const TimePeriods = {
+  HoursInDay: 24,
+  MinInHour: 60,
+  SecInHour: 60,
+  MsecInSec: 1000
+};
