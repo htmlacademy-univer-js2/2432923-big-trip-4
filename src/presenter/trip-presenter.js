@@ -1,12 +1,12 @@
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
-import { render, RenderPosition } from '../render.js';
+import { render, RenderPosition } from '../framework/render.js';
 import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
 import FilterView from '../view/filter-view.js';
 import TripInfoView from '../view/trip-info-view.js';
 
-export default class BoardPresenter {
+export default class TripPresenter {
   pointList = new PointListView();
 
   constructor({container, pointsModel}) {
@@ -24,14 +24,14 @@ export default class BoardPresenter {
       point: this.tripPoints[0],
       offersByPointType: this.pointsModel.offersModel.getOffersByType(this.tripPoints[0].type)
     }),
-    this.pointList.getElement());
+    this.pointList.element);
 
     for (let i = 1; i < this.tripPoints.length; i++) {
       render(new PointView({
         point: this.tripPoints[i],
-        offersByPointType: this.pointsModel.offersModel.getOffersByType(this.tripPoints[0].type)
+        offersByPointType: this.pointsModel.offersModel.getOffersByType(this.tripPoints[i].type)
       }),
-      this.pointList.getElement());
+      this.pointList.element);
     }
   }
 }

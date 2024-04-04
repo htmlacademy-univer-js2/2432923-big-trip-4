@@ -1,25 +1,17 @@
 import { createPointTemplate } from '../templates/point-template.js';
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class PointView {
+export default class PointView extends AbstractView{
+  #point;
+  #offersByPointType;
+
   constructor({point, offersByPointType}) {
-    this.point = point;
-    this.offersByPointType = offersByPointType;
+    super();
+    this.#point = point;
+    this.#offersByPointType = offersByPointType;
   }
 
-  getTemplate() {
-    return createPointTemplate(this.point, this.offersByPointType);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createPointTemplate(this.#point, this.#offersByPointType);
   }
 }
