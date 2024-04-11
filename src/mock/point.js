@@ -1,10 +1,10 @@
 import { getRandomArrayElement, getRandomInteger } from '../utils.js';
-import { DATE, POINT_TYPES, PRICE } from '../consts.js';
+import { DATE, POINT_TYPES, PRICE, DESTINATIONS } from '../consts.js';
 import { getRandomDestination } from './destination.js';
 import { getOfferByCurrentPointType } from './offer.js';
 
 export const generatePoint = () => {
-  const pointId = crypto.randomUUID();
+  const pointId = getRandomInteger(DESTINATIONS.length);
   const date = getRandomArrayElement(DATE);
   const pointType = getRandomArrayElement(POINT_TYPES);
   const offersByCurrentPointType = getOfferByCurrentPointType(pointType);
