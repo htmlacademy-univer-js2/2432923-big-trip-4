@@ -5,14 +5,15 @@ import AbstractView from '../framework/view/abstract-view';
 export default class PointEditView extends AbstractView{
   #point = null;
   #offersByPointType = null;
-  #handleFormSubmit = null;
+  #destination = null;
   #onResetClick = null;
   #onSubmitClick = null;
 
-  constructor({point = DEFAULT_POINT, offersByPointType = [], onResetClick, onSubmitClick}) {
+  constructor({point = DEFAULT_POINT, offersByPointType = [], destination, onResetClick, onSubmitClick}) {
     super();
     this.#point = point;
     this.#offersByPointType = offersByPointType;
+    this.#destination = destination;
     this.#onResetClick = onResetClick;
     this.#onSubmitClick = onSubmitClick;
 
@@ -20,7 +21,7 @@ export default class PointEditView extends AbstractView{
   }
 
   get template() {
-    return createPointEditTemplate(this.#point, this.#offersByPointType);
+    return createPointEditTemplate(this.#point, this.#offersByPointType, this.#destination);
   }
 
   #resetClickHandler = (evt) => {
@@ -42,6 +43,4 @@ export default class PointEditView extends AbstractView{
       .querySelector('form')
       .addEventListener('submit', this.#submitClickHandler);
   };
-
-
 }

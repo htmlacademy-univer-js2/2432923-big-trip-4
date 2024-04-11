@@ -4,19 +4,21 @@ import AbstractView from '../framework/view/abstract-view';
 export default class PointView extends AbstractView{
   #point;
   #offersByPointType;
+  #destination;
   #onEditClick;
 
-  constructor({point, offersByPointType, onEditClick}) {
+  constructor({point, offersByPointType, destination, onEditClick}) {
     super();
     this.#point = point;
     this.#offersByPointType = offersByPointType;
+    this.#destination = destination;
     this.#onEditClick = onEditClick;
 
     this.#addPointHandlers();
   }
 
   get template() {
-    return createPointTemplate(this.#point, this.#offersByPointType);
+    return createPointTemplate(this.#point, this.#offersByPointType, this.#destination);
   }
 
   #addPointHandlers = () => {

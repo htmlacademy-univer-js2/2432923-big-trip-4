@@ -27,20 +27,9 @@ export default class TripPresenter {
     render(new SortView(), this.#container.events);
     render(new FilterView(), this.#container.filter);
     render(new TripInfoView({points: this.#tripPoints}), this.#container.tripInfo, RenderPosition.AFTERBEGIN);
-    // render(new PointEditView({
-    //   point: this.#tripPoints[0],
-    //   offersByPointType: this.#pointsModel.offersModel.getOffersByType(this.#tripPoints[0].type)
-    // }),
-    // this.#pointList.element);
 
     for (let i = 0; i < this.#tripPoints.length; i++) {
       this.#renderPoint(this.#tripPoints[i]);
-      // console.log(this.#tripPoints[i]);
-      // render(new PointView({
-      //   point: this.#tripPoints[i],
-      //   offersByPointType: this.#pointsModel.offersModel.getOffersByType(this.#tripPoints[i].type),
-      // }),
-      // this.#pointList.element);
     }
   }
 
@@ -48,12 +37,14 @@ export default class TripPresenter {
     const pointComponent = new PointView({
       point: point,
       offersByPointType: this.#offerModel.getOffersByType(point.type),
+      destination: this.#destinationModel.getDestinationById(point.destination),
       onEditClick: pointEditClickHandler
     });
 
     const editPointComponent = new PointEditView({
       point: point,
       offersByPointType: this.#offerModel.getOffersByType(point.type),
+      destination: this.#destinationModel.getDestinationById(point.destination),
       onResetClick: resetButtonClickHandler,
       onSubmitClick: pointSubmitHandler
     });

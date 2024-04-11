@@ -2,7 +2,11 @@ import { getDestinations } from '../mock/destination';
 import { getRandomArrayElement } from '../utils';
 
 export default class DestinationModel {
-  #destinations = getDestinations();
+  #destinations = null;
+
+  constructor() {
+    this.#destinations = getDestinations();
+  }
 
   getDestinations() {
     return this.#destinations;
