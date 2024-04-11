@@ -1,24 +1,15 @@
 import { createTripInfoTemplate } from '../templates/trip-info-template.js';
-import { createElement } from '../render.js';
+import AbstractView from '../framework/view/abstract-view';
 
-export default class TripInfoView {
+export default class TripInfoView extends AbstractView{
+  #points;
+
   constructor({points}) {
-    this.points = points;
+    super();
+    this.#points = points;
   }
 
-  getTemplate() {
-    return createTripInfoTemplate(this.points);
-  }
-
-  getElement() {
-    if(!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
+  get template() {
+    return createTripInfoTemplate(this.#points);
   }
 }
