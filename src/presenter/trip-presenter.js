@@ -5,7 +5,6 @@ import PointView from '../view/point-view.js';
 import PointEditView from '../view/point-edit-view.js';
 import FilterView from '../view/filter-view.js';
 import TripInfoView from '../view/trip-info-view.js';
-import { generateFilter } from '../mock/filter.js';
 
 export default class TripPresenter {
   #pointList = null;
@@ -25,10 +24,9 @@ export default class TripPresenter {
 
   init() {
     this.#tripPoints = [...this.#pointsModel.getPoints()];
-    const filters = generateFilter(this.#tripPoints);
     render(this.#pointList, this.#container.events);
     render(new SortView(), this.#container.events);
-    render(new FilterView({ filters }), this.#container.filter);
+    render(new FilterView(this.#tripPoints), this.#container.filter);
     render(new TripInfoView({points: this.#tripPoints, destinationModel: this.#destinationModel}), this.#container.tripInfo, RenderPosition.AFTERBEGIN);
 
     for (let i = 0; i < this.#tripPoints.length; i++) {
