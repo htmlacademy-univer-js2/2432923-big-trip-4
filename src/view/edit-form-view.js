@@ -1,37 +1,37 @@
 import { createPointEditTemplate } from '../templates/point-edit-template.js';
 import { DEFAULT_POINT } from '../consts.js';
-import AbstractView from '../framework/view/abstract-view';
+import AbstractView from '../framework/view/abstract-view.js';
 
-export default class PointEditView extends AbstractView{
+export default class EditFormView extends AbstractView{
   #point = null;
-  #offersByPointType = null;
+  #offers = null;
   #destination = null;
-  #onResetClick = null;
-  #onSubmitClick = null;
+  #onEditFormReset = null;
+  #onEditFormSubmit = null;
 
-  constructor({point = DEFAULT_POINT, offersByPointType = [], destination, onResetClick, onSubmitClick}) {
+  constructor({point = DEFAULT_POINT, offers = [], destination, onEditFormReset, onEditFormSubmit}) {
     super();
     this.#point = point;
-    this.#offersByPointType = offersByPointType;
+    this.#offers = offers;
     this.#destination = destination;
-    this.#onResetClick = onResetClick;
-    this.#onSubmitClick = onSubmitClick;
+    this.#onEditFormReset = onEditFormReset;
+    this.#onEditFormSubmit = onEditFormSubmit;
 
     this.#addEditPointHandlers();
   }
 
   get template() {
-    return createPointEditTemplate(this.#point, this.#offersByPointType, this.#destination);
+    return createPointEditTemplate(this.#point, this.#offers, this.#destination);
   }
 
   #resetClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onResetClick();
+    this.#onEditFormReset();
   };
 
   #submitClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onSubmitClick();
+    this.#onEditFormSubmit();
   };
 
   #addEditPointHandlers = () => {
