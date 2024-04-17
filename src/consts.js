@@ -24,12 +24,12 @@ export const DESCRIPTIONS = ['Lorem ipsum dolor sit amet, consectetur adipiscing
   'In rutrum ac purus sit amet tempus.'];
 export const DATE = [
   {
-    from: '2024-03-18T10:30',
-    to: '2024-03-18T16:00'
+    from: '2024-03-16T10:30',
+    to: '2024-03-17T16:00'
   },
   {
-    from: '2024-03-18T16:20',
-    to: '2024-03-18T17:00'
+    from: '2024-06-10T16:20',
+    to: '2024-06-12T17:00'
   },
   {
     from: '2024-03-19T14:20',
@@ -80,4 +80,20 @@ export const filter = {
 export const Mode = {
   DEFAULT: 'default',
   EDITING: 'editing',
+};
+
+export const SortType = {
+  DAY: 'day',
+  EVENT: 'event',
+  TIME: 'time',
+  PRICE: 'price',
+  OFFER: 'offer'
+};
+
+export const enabledSortType = {
+  [SortType.DAY]: true,
+  [SortType.EVENT]: false,
+  [SortType.TIME]: true,
+  [SortType.PRICE]: true,
+  [SortType.OFFER]: false,
 };
