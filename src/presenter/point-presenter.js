@@ -35,16 +35,16 @@ export default class PointPresenter {
       point: this.#point,
       offers: this.#offerModel.getOffersByType(this.#point.type),
       destination: this.#destinationModel.getDestinationById(point.destination),
-      onEditFormClick: this.#onEditFormClick,
-      onFavoriteClick: this.#onFavoriteClick
+      onEditFormClick: this.#editFormClickHandler,
+      onFavoriteClick: this.#favoriteClickHandler
     });
 
     this.#editFormComponent = new EditFormView({
       point: this.#point,
       offers: this.#offerModel.getOffersByType(point.type),
       destination: this.#destinationModel.getDestinationById(point.destination),
-      onEditFormReset: this.#onEditFormReset,
-      onEditFormSubmit: this.#onEditFormSubmit
+      onEditFormReset: this.#editFormResetHandler,
+      onEditFormSubmit: this.#editFormSubmitHandler
     });
 
     if (!prevPointComponent || !prevEditFormComponent) {
@@ -95,24 +95,24 @@ export default class PointPresenter {
     }
   };
 
-  #onFavoriteClick = () => {
+  #favoriteClickHandler = () => {
     this.#handleDataChange({
       ...this.#point,
       isFavorite: !this.#point.isFavorite,
     });
   };
 
-  #onEditFormClick = () => {
+  #editFormClickHandler = () => {
     this.#switchToEditForm();
     document.removeEventListener('keydown', this.escKeydownHandler);
   };
 
-  #onEditFormReset = () => {
+  #editFormResetHandler = () => {
     this.#switchToPoint();
     document.removeEventListener('keydown', this.escKeydownHandler);
   };
 
-  #onEditFormSubmit = () => {
+  #editFormSubmitHandler = () => {
     this.#switchToPoint();
     document.removeEventListener('keydown', this.escKeydownHandler);
   };
