@@ -67,7 +67,7 @@ function createOffersSelector({ offers, currentOffers }) {
 </section>` : '';
 }
 
-export function createEditFormTemplate ({point, pointOffers, destinations, editPointType}) {
+export function createPointEditFormTemplate ({point, pointOffers, destinations, editPointType}) {
   const { basePrice, dateFrom, dateTo, offers, type } = point;
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
   const currentOffers = pointOffers.find((offer) => offer.type === type)?.offers;

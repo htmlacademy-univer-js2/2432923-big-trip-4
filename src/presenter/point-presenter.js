@@ -1,5 +1,5 @@
 import PointView from '../view/point-view';
-import EditFormView from '../view/edit-form-view';
+import PointEditFormView from '../view/point-edit-form-view';
 import { Mode, UpdateType, UserAction } from '../consts';
 import { render, replace, remove } from '../framework/render';
 import { isMajorDifference } from '../utils';
@@ -41,7 +41,7 @@ export default class PointPresenter {
       onFavoriteClick: this.#favoriteClickHandler
     });
 
-    this.#editFormComponent = new EditFormView({
+    this.#editFormComponent = new PointEditFormView({
       point: this.#point,
       offers: this.#offerModel.get(),
       destinations: this.#destinationModel.get(),

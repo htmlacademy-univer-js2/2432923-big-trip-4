@@ -10,7 +10,7 @@ export default class PointsModel extends Observable {
     this.#points = Array.from({ length: POINT_COUNT }, generatePoint);
   }
 
-  getPoints() {
+  get() {
     return this.#points;
   }
 

@@ -1,4 +1,4 @@
-import { createEditFormTemplate } from '../templates/point-edit-template.js';
+import { createPointEditFormTemplate } from '../templates/point-edit-form-template.js';
 import { BLANK_POINT } from '../consts.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { EditType } from '../consts.js';
@@ -6,7 +6,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 
-export default class EditFormView extends AbstractStatefulView{
+export default class PointEditFormView extends AbstractStatefulView{
   #offers = null;
   #destinations = null;
   #handleEditFormReset = null;
@@ -25,7 +25,7 @@ export default class EditFormView extends AbstractStatefulView{
     this.#handleEditFormDelete = onEditFormDelete;
     this.#editFormType = editFormType;
 
-    this._setState(EditFormView.parsePointToState({point}));
+    this._setState(PointEditFormView.parsePointToState({point}));
     this._restoreHandlers();
   }
 
@@ -87,7 +87,7 @@ export default class EditFormView extends AbstractStatefulView{
 
 
   get template() {
-    return createEditFormTemplate({
+    return createPointEditFormTemplate({
       point: this._state.point,
       pointOffers: this.#offers,
       destinations: this.#destinations,
@@ -143,7 +143,7 @@ export default class EditFormView extends AbstractStatefulView{
 
   #deleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditFormDelete(EditFormView.parseStateToPoint(this._state));
+    this.#handleEditFormDelete(PointEditFormView.parseStateToPoint(this._state));
   };
 
   #resetClickHandler = (evt) => {
@@ -153,7 +153,7 @@ export default class EditFormView extends AbstractStatefulView{
 
   #submitClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditFormSubmit(EditFormView.parseStateToPoint(this._state));
+    this.#handleEditFormSubmit(PointEditFormView.parseStateToPoint(this._state));
   };
 
   #typeChangeHandler = (evt) => {

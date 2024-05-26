@@ -22,7 +22,7 @@ export default class FilterPresenter {
   }
 
   get filters() {
-    const points = this.#pointsModel.getPoints(); //сделать через метод
+    const points = this.#pointsModel.get(); //сделать через метод
     const result = Object.entries(filter).map(([filterType, filterPoints]) =>
       ({
         type: filterType,

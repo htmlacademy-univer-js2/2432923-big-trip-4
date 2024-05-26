@@ -1,7 +1,7 @@
 import { render } from '../framework/render';
-import CreatePointButtonView from '../view/create-point-button-view';
+import NewPointButtonView from '../view/new-point-button-view';
 
-export default class CreatePointButtonPresenter {
+export default class NewPointButtonPresenter {
   #container = null;
   #button = null;
 
@@ -10,7 +10,7 @@ export default class CreatePointButtonPresenter {
   }
 
   init = ({onClick}) => {
-    this.#button = new CreatePointButtonView({onClick});
+    this.#button = new NewPointButtonView({onClick});
     render(this.#button, this.#container);
   };
 

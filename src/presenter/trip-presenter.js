@@ -11,7 +11,7 @@ import PointPresenter from './point-presenter.js';
 import SortPresenter from './sort-presenter.js';
 import { filter } from '../utils.js';
 import { UpdateType, UserAction, SortType, FilterType } from '../consts.js';
-import CreatePointPresenter from './create-point-presenter.js';
+import CreatePointPresenter from './new-point-presenter.js';
 
 export default class TripPresenter {
   #container = null;
@@ -64,7 +64,7 @@ export default class TripPresenter {
   get points() {
     //console.log(this.#pointsModel);
     const filterType = this.#filterModel.get();
-    const points = this.#pointsModel.getPoints();
+    const points = this.#pointsModel.get();
     const filteredPoints = filter[filterType](points);
 
     // console.log(filterType, filteredPoints);

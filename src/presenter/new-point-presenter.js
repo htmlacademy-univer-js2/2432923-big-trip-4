@@ -1,5 +1,5 @@
 import { RenderPosition, render } from '../framework/render';
-import EditFormView from '../view/edit-form-view';
+import PointEditFormView from '../view/point-edit-form-view';
 import { UserAction, UpdateType } from '../consts';
 import { remove } from '../framework/render';
 import { EditType } from '../consts';
@@ -27,7 +27,7 @@ export default class CreatePointPresenter {
 
   init = () => {
     if (!this.#createPointComponent) {
-      this.#createPointComponent = new EditFormView({
+      this.#createPointComponent = new PointEditFormView({
         offers: this.#offersModel.get(),
         destinations: this.#destinationModel.get(),
         onEditFormReset: this.#handleFormClose,
