@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+import { getRandomInteger } from './utils';
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(duration);
@@ -35,8 +36,8 @@ export const DATE = [
     to: '2024-03-19T15:00'
   },
   {
-    from: '2024-03-19T16:00',
-    to: '2024-03-19T17:00'
+    from: '2025-03-19T16:00',
+    to: '2025-03-19T17:00'
   },
   {
     from: '2024-03-19T18:00',
@@ -47,14 +48,28 @@ export const PRICE = {
   min: 40,
   max: 3000
 };
-export const DEFAULT_POINT = {
-  id: null,
-  type: null,
-  price: null,
-  date: null,
+export function humanizeDate(date, format) {
+  return date ? dayjs(date).format(format) : '';
+}
+
+// id,
+//     basePrice,
+//     dateFrom: date.from,
+//     dateTo: date.to,
+//     destination: destinationId,
+//     isFavorite,
+//     offers: offersId,
+//     type
+
+export const BLANK_POINT = {
+  // id: Math.round(1000 * Math.random()),
+  basePrice: 0,
+  dateFrom: null,//
+  dateTo: null,//
   destination: null,
-  offer: null,
   isFavorite: false,
+  offers: [],
+  type: 'flight',//
 };
 export const TimePeriods = {
   HoursInDay: 24,
@@ -105,4 +120,11 @@ export const UserAction = {
 export const EditType = {
   EDITING: 'EDITING',
   CREATING: 'CREATING',
+};
+
+export const EmptyListMessage = {
+  [FilterType.EVERYTHING]: 'Click New Event to create your first point',
+  [FilterType.FUTURE]: 'There are no future events now',
+  [FilterType.PRESENT]: 'There are no present events now',
+  [FilterType.PAST]: 'There are no past events now'
 };

@@ -63,9 +63,11 @@ export default class TripPresenter {
 
   get points() {
     //console.log(this.#pointsModel);
-    const filterType = this.#filterModel.getFilter();
-    const points = this.#pointsModel.points;
+    const filterType = this.#filterModel.get();
+    const points = this.#pointsModel.getPoints();
     const filteredPoints = filter[filterType](points);
+
+    // console.log(filterType, filteredPoints);
 
     return sort(filteredPoints, this.#currentSortType);
     // попробовать sortMethod из utils
@@ -109,9 +111,8 @@ export default class TripPresenter {
 
   #clearTrip = ({resetSortType = false} = {}) => {
     this.#clearPoints();
-    this.#createPointPresenter.destroy();
-    this.#pointPresenters.forEach((presenter) => presenter.destroy());
-    this.#pointPresenters.clear();
+
+    // console.log(this.#pointListComponent, 'list');
 
     remove(this.#emptyPointListComponent);
     if (this.#sortPresenter) {
@@ -138,6 +139,32 @@ export default class TripPresenter {
     // this.#renderFilter();
   };
 
+  #renderPointList() {
+    render(this.#pointListComponent, this.#container.events);
+  }
+
+  #renderPoint = (point) => {
+    const pointPresenter = new PointPresenter({
+      pointListContainer: this.#pointListComponent.element,
+      destinationModel: this.#destinationModel,
+      offerModel: this.#offersModel,
+      handleDataChange: this.#viewActionHandler, //onDataChange
+      handleModeChange: this.#modeChangeHandler, //onModeChange
+    });
+
+    pointPresenter.init(point);
+    this.#pointPresenters.set(point.id, pointPresenter);
+
+  };
+
+  #renderPoints() {
+    // console.log(this.points.length);
+
+    this.points.forEach((point) => this.#renderPoint(point));
+    // console.log('pointpresenter', this.#pointPresenters);
+    // console.log('---------------');
+  }
+
   #renderSort() {
     this.#sortPresenter = new SortPresenter({
       sortContainer: this.#container.events,
@@ -158,6 +185,7 @@ export default class TripPresenter {
     this.#renderPointList();
     this.#renderPoints();
   };
+
 
   // #renderMessage = () => {
 
@@ -181,13 +209,7 @@ export default class TripPresenter {
   };
 
   // объединить нижние два метода в один
-  #renderPointList() {
-    render(this.#pointListComponent, this.#container.events);
-  }
 
-  #renderPoints() {
-    this.points.forEach((point) => this.#renderPoint(point));
-  }
 
   // #renderTripInfo() {
   //   render(this.#tripInfoComponent, this.#container.tripInfo, RenderPosition.AFTERBEGIN);
@@ -202,23 +224,13 @@ export default class TripPresenter {
   //   filterPresenter.init();
   // }
 
-  #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter({
-      pointListContainer: this.#pointListComponent.element,
-      destinationModel: this.#destinationModel,
-      offerModel: this.#offersModel,
-      handleDataChange: this.#viewActionHandler, //onDataChange
-      handleModeChange: this.#modeChangeHandler, //onModeChange
-    });
-
-    pointPresenter.init(point);
-    this.#pointPresenters.set(point.id, pointPresenter);
-  };
 
   #clearPoints = () => {
+    // console.log(this.#pointPresenters);
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
     this.#createPointPresenter.destroy();
+    // console.log(this.#pointPresenters);
   };
 
   // #handlePointChange = (updatePoint) => {

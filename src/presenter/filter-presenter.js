@@ -12,34 +12,37 @@ export default class FilterPresenter {
   #filterComponent = null;
 
   constructor({filterContainer, pointsModel, filterModel}) {
-    this.#filterContainer = filterContainer; //вопросик по передаче нужного контейнера
+    this.#filterContainer = filterContainer;
 
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
     this.#pointsModel.addObserver(this.#modelChangeHandler);
-    this.#filterModel.addObserver(this.#modelChangeHandler);
+
   }
 
   get filters() {
-    const points = this.#pointsModel.points;
-
-    return Object.entries(filter).map(([filterType, filterPoints]) =>
+    const points = this.#pointsModel.getPoints(); //сделать через метод
+    const result = Object.entries(filter).map(([filterType, filterPoints]) =>
       ({
         type: filterType,
         isDisabled: filterPoints(points).length === 0,
       }),
     );
+    // console.log('result', result);
+    return result;
   }
 
   init(){
     const prevFilterComponent = this.#filterComponent;
 
+    this.#filterModel.addObserver(this.#modelChangeHandler);
+
     this.#filterComponent = new FilterView({
       //проверить аргументы во view
-      filters: this.filters,
-      currentFilterType: this.#filterModel.filter,
-      onFilterTypeChange: this.#filterTypeChangeHandler,
+      items: this.filters,
+      //currentFilterType: this.#filterModel.filter,
+      onItemChange: this.#filterTypeChangeHandler,
     });
 
     if (prevFilterComponent === null) {
@@ -55,6 +58,7 @@ export default class FilterPresenter {
     if (this.#filterModel.filter === filterType) {
       return;
     }
+    // console.log(this.#pointsModel.points);
     this.#filterModel.set(UpdateType.MAJOR, filterType);
   };
 

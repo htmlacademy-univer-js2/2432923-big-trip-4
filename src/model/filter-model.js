@@ -4,13 +4,12 @@ import {FilterType} from '../consts.js';
 export default class FilterModel extends Observable {
   #currentFilter = FilterType.EVERYTHING;
 
-  getFilter () {
-    //console.log(this.#currentFilter);
-    return this.#currentFilter;
+  set(updateType, update) {
+    this.#currentFilter = update;
+    this._notify(updateType, update);
   }
 
-  set (updateType, filter) {
-    this.#currentFilter = filter;
-    this._notify(updateType, filter);
+  get() {
+    return this.#currentFilter;
   }
 }

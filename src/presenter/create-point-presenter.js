@@ -4,6 +4,9 @@ import { UserAction, UpdateType } from '../consts';
 import { remove } from '../framework/render';
 import { EditType } from '../consts';
 
+// точки дублируются
+
+
 export default class CreatePointPresenter {
   #container = null;
   #createPointComponent = null;
@@ -23,7 +26,6 @@ export default class CreatePointPresenter {
   }
 
   init = () => {
-    // console.log(this.#offersModel);
     if (!this.#createPointComponent) {
       this.#createPointComponent = new EditFormView({
         offers: this.#offersModel.get(),
@@ -32,7 +34,6 @@ export default class CreatePointPresenter {
         onEditFormSubmit: this.#handleEditFormSubmit,
         editFormType: EditType.CREATING,
       });
-      console.log(this.#createPointComponent);
     }
 
     render(this.#createPointComponent, this.#container, RenderPosition.AFTERBEGIN);

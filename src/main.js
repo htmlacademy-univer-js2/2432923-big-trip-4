@@ -27,7 +27,7 @@ const filterModel = new FilterModel();
 const createPointButtonPresenter = new CreatePointButtonPresenter({
   container: container.tripInfo,
 });
-console.log(createPointButtonPresenter);
+// console.log(createPointButtonPresenter);
 
 const tripPresenter = new TripPresenter({
   container,
@@ -38,7 +38,7 @@ const tripPresenter = new TripPresenter({
   createPointButtonPresenter,
 });
 
-render(new TripInfoView(pointsModel.points, destinationModel), container.tripInfo, RenderPosition.AFTERBEGIN);
+render(new TripInfoView(pointsModel.getPoints(), destinationModel), container.tripInfo, RenderPosition.AFTERBEGIN);
 
 const filterPresenter = new FilterPresenter({
   filterContainer: container.filter,
@@ -52,3 +52,4 @@ createPointButtonPresenter.init({
 
 tripPresenter.init();
 filterPresenter.init();
+// console.log(filterModel);

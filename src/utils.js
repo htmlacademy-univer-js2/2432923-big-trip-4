@@ -72,4 +72,9 @@ export const isMajorDifference = (pointA, pointB) => {
   aPointDuration !== bPointDuration;
 };
 
+export const getLastWord = (string) => {
+  const words = string.split(' ');
+  return words.at(-1);
+};
+
 
