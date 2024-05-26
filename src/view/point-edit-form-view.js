@@ -1,5 +1,9 @@
+// починить выбор даты, ограничения на выбор до/после
+
+// Выбор дополнительных опций влияет на общую стоимость путешествия. Стоимость точки маршрута, которую ввёл пользователь в соответствующее поле ввода, при этом не изменяется.
+
 import { createPointEditFormTemplate } from '../templates/point-edit-form-template.js';
-import { BLANK_POINT } from '../consts.js';
+import { DEFAULT_POINT } from '../consts.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { EditType } from '../consts.js';
 import flatpickr from 'flatpickr';
@@ -16,7 +20,7 @@ export default class PointEditFormView extends AbstractStatefulView{
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({point = BLANK_POINT, offers, destinations, onPointEditFormReset, onPointEditFormSubmit, onPointEditFormDelete, pointEditType = EditType.EDITING}) {
+  constructor({point = DEFAULT_POINT, offers, destinations, onPointEditFormReset, onPointEditFormSubmit, onPointEditFormDelete, pointEditType = EditType.EDITING}) {
     super();
     this.#offers = offers;
     this.#destinations = destinations;

@@ -26,7 +26,7 @@ export default class TripPresenter {
   #pointPresenters = new Map();
 
   #pointsListComponent = new PointListView();
-  #emptyPointListComponent = new EmptyPointListView();
+  #emptyPointListComponent = null;
 
   constructor ({tripContainer, pointsModel, offersModel, destinationModel, filterModel, newPointButtonPresenter}) {
     this.#tripContainer = tripContainer;
@@ -107,13 +107,21 @@ export default class TripPresenter {
 
   #renderTrip = () => {
     if (!this.points.length && !this.#isCreating) {
-      render(this.#emptyPointListComponent, this.#tripContainer);
+      this.#renderEmptyList();
       return;
     }
 
     this.#renderSort();
     this.#renderPointList();
     this.#renderPoints();
+  };
+
+  #renderEmptyList = () => {
+    this.#emptyPointListComponent = new EmptyPointListView({
+      filterType: this.#filterModel.get(),
+    });
+
+    render(this.#emptyPointListComponent, this.#tripContainer);
   };
 
   #renderPointList() {

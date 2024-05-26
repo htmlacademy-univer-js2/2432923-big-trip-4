@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
-import { SortType } from './consts';
+import { SortType, TimePeriods } from './consts';
 import { FilterType } from './consts';
 dayjs.extend(duration);
 
@@ -8,16 +8,16 @@ export const getRandomArrayElement = (items) => items[Math.floor(Math.random() *
 
 export const getRandomInteger = (max, min = 0) =>Math.round((max - min) * Math.random() + min);
 
+export const getPointDuration = (dateFrom, dateTo) => {
+  const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'minutes');
 
-export function getTimeInHours(startTime, endTime) {
-  const hours = dayjs(endTime).diff(dayjs(startTime), 'hours');
-  return hours !== 0 ? `${hours }H` : '';
-}
-
-export function getTimeInMinutes(startTime, endTime) {
-  const minutes = dayjs(endTime).diff(dayjs(startTime), 'minutes') % 60;
-  return minutes !== 0 ? `${minutes }M` : '';
-}
+  if (pointDuration >= TimePeriods.MinInDay) {
+    return dayjs.duration(pointDuration, 'minutes').format('DD[D] HH[H] mm[M]');
+  } else if (pointDuration >= TimePeriods.MinInHour) {
+    return dayjs.duration(pointDuration, 'minutes').format('HH[H] mm[M]');
+  }
+  return dayjs.duration(pointDuration, 'minutes').format('mm[M]');
+};
 
 export function isFutureDate(dateFrom) {
   return dayjs(dateFrom).isAfter(dayjs());

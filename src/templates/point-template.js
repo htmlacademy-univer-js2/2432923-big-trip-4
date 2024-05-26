@@ -1,4 +1,4 @@
-import { getTimeInHours, getTimeInMinutes } from '../utils';
+import { getPointDuration } from '../utils';
 import dayjs from 'dayjs';
 import he from 'he';
 
@@ -17,8 +17,12 @@ function createOffersListTemplate(currentOffers, offers) {
 export function createPointTemplate (point, offersByPointType, destination){
   const { basePrice, dateFrom, dateTo, isFavorite, offers, type } = point;
   const favouriteClassname = isFavorite ? 'event__favorite-btn--active' : '';
-  const hours = getTimeInHours(dateFrom, dateTo);
-  const minutes = getTimeInMinutes(dateFrom, dateTo);
+  // const days = getTimeInDays(dateFrom, dateTo);
+  // const hours = getTimeInHours(dateFrom, dateTo);
+  // const minutes = getTimeInMinutes(dateFrom, dateTo);
+
+  // const time = getTime(dateFrom, dateTo);
+  // console.log(time);
 
   return `<li class="trip-events__item">
   <div class="event">
@@ -33,7 +37,7 @@ export function createPointTemplate (point, offersByPointType, destination){
         &mdash;
         <time class="event__end-time" datetime="${ dateTo }">${ dayjs(dateTo).format('HH:mm') }</time>
       </p>
-      <p class="event__duration">${ hours } ${ minutes }</p>
+      <p class="event__duration">${ getPointDuration(dateFrom, dateTo) }</p>
     </div>
     <p class="event__price">
       &euro;&nbsp;<span class="event__price-value">${ basePrice }</span>

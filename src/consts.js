@@ -7,9 +7,13 @@ dayjs.extend(isSameOrAfter);
 dayjs.extend(duration);
 
 export const POINT_COUNT = Math.round(5 * Math.random());
+
 export const POINT_TYPES = ['taxi', 'bus', 'train', 'ship', 'drive', 'flight', 'check-in', 'sightseeing', 'restaurant'];
+
 export const DESTINATIONS = ['Amsterdam', 'Chamonix', 'Geneva', 'Paris', 'Saint Petersburg', 'Vienna'];
+
 export const OFFERS = ['Add luggage', 'Switch to comfort class', 'Add meal', 'Choose seats', 'Travel by train'];
+
 export const DESCRIPTIONS = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   'Cras aliquet varius magna, non porta ligula feugiat eget',
   'Fusce tristique felis at fermentum pharetra.',
@@ -21,6 +25,7 @@ export const DESCRIPTIONS = ['Lorem ipsum dolor sit amet, consectetur adipiscing
   'Aliquam erat volutpat.',
   'Nunc fermentum tortor ac porta dapibus.',
   'In rutrum ac purus sit amet tempus.'];
+
 export const DATE = [
   {
     from: '2024-03-16T10:30',
@@ -43,39 +48,27 @@ export const DATE = [
     to: '2024-03-19T19:00'
   }
 ];
+
 export const PRICE = {
   min: 40,
   max: 3000
 };
-export function humanizeDate(date, format) {
-  return date ? dayjs(date).format(format) : '';
-}
 
-// id,
-//     basePrice,
-//     dateFrom: date.from,
-//     dateTo: date.to,
-//     destination: destinationId,
-//     isFavorite,
-//     offers: offersId,
-//     type
-
-export const BLANK_POINT = {
-  // id: Math.round(1000 * Math.random()),
+export const DEFAULT_POINT = {
   basePrice: 0,
-  dateFrom: null,//
-  dateTo: null,//
+  dateFrom: null,
+  dateTo: null,
   destination: null,
   isFavorite: false,
   offers: [],
-  type: 'flight',//
+  type: 'flight',
 };
+
 export const TimePeriods = {
-  HoursInDay: 24,
   MinInHour: 60,
-  SecInHour: 60,
-  MsecInSec: 1000
+  MinInDay: 1440
 };
+
 export const FilterType = {
   EVERYTHING: 'everything',
   FUTURE: 'future',
