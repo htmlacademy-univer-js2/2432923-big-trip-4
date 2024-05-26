@@ -7,6 +7,7 @@ import { remove } from '../framework/render';
 export default class SortPresenter {
   #sortContainer = null;
   #sortComponent = null;
+
   #handleSortTypeChange = null;
   #currentSortType = SortType.DAY;
 

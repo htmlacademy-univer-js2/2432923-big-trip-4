@@ -1,15 +1,13 @@
 import { RenderPosition, render } from '../framework/render';
-import PointEditFormView from '../view/point-edit-form-view';
 import { UserAction, UpdateType } from '../consts';
 import { remove } from '../framework/render';
 import { EditType } from '../consts';
 
-// точки дублируются
+import PointEditFormView from '../view/point-edit-form-view';
 
-
-export default class CreatePointPresenter {
-  #container = null;
-  #createPointComponent = null;
+export default class NewPointPresenter {
+  #newPointContainer = null;
+  #newPointComponent = null;
 
   #destinationModel = null;
   #offersModel = null;
@@ -17,43 +15,45 @@ export default class CreatePointPresenter {
   #handleDataChange = null;
   #handleDestroy = null;
 
-  constructor ({container, destinationModel, offersModel, onDataChange, onDestroy}) {
-    this.#container = container;
+  constructor ({newPointContainer, destinationModel, offersModel, onDataChange, onDestroy}) {
+    this.#newPointContainer = newPointContainer;
+
     this.#destinationModel = destinationModel;
     this.#offersModel = offersModel;
+
     this.#handleDataChange = onDataChange;
     this.#handleDestroy = onDestroy;
   }
 
   init = () => {
-    if (!this.#createPointComponent) {
-      this.#createPointComponent = new PointEditFormView({
+    if (!this.#newPointComponent) {
+      this.#newPointComponent = new PointEditFormView({
         offers: this.#offersModel.get(),
         destinations: this.#destinationModel.get(),
-        onEditFormReset: this.#handleFormClose,
-        onEditFormSubmit: this.#handleEditFormSubmit,
-        editFormType: EditType.CREATING,
+        pointEditType: EditType.CREATING,
+        onPointEditFormReset: this.#handlePointEditFormClose,
+        onPointEditFormSubmit: this.#handlePointEditFormSubmit,
       });
     }
 
-    render(this.#createPointComponent, this.#container, RenderPosition.AFTERBEGIN);
+    render(this.#newPointComponent, this.#newPointContainer, RenderPosition.AFTERBEGIN);
     document.addEventListener('keydown', this.#escKeyDownHandler);
 
   };
 
   destroy = ({isCanceled = true} = {}) => {
-    if (!this.#createPointComponent) {
+    if (!this.#newPointComponent) {
       return;
     }
+    remove(this.#newPointComponent);
 
-    remove(this.#createPointComponent);
-    this.#createPointComponent = null;
-    document.removeEventListener('keydown', this.#escKeyDownHandler);
-
+    this.#newPointComponent = null;
     this.#handleDestroy({isCanceled});
+
+    document.removeEventListener('keydown', this.#escKeyDownHandler);
   };
 
-  #handleEditFormSubmit = (point) => {
+  #handlePointEditFormSubmit = (point) => {
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
@@ -63,7 +63,7 @@ export default class CreatePointPresenter {
     this.destroy({ isCanceled: false });
   };
 
-  #handleFormClose = () => {
+  #handlePointEditFormClose = () => {
     this.destroy();
   };
 

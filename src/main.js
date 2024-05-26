@@ -22,20 +22,18 @@ const destinationModel = new DestinationModel();
 const offersModel = new OffersModel();
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
-//console.log(filterModel);
 
-const createPointButtonPresenter = new NewPointButtonPresenter({
-  container: container.tripInfo,
+const newPointButtonPresenter = new NewPointButtonPresenter({
+  newPointButtonContainer: container.tripInfo,
 });
-// console.log(createPointButtonPresenter);
 
 const tripPresenter = new TripPresenter({
-  container,
+  tripContainer: container.events,
   pointsModel,
   offersModel,
   destinationModel,
   filterModel,
-  createPointButtonPresenter,
+  newPointButtonPresenter,
 });
 
 render(new TripInfoView(pointsModel.get(), destinationModel), container.tripInfo, RenderPosition.AFTERBEGIN);
@@ -46,8 +44,8 @@ const filterPresenter = new FilterPresenter({
   filterModel
 });
 
-createPointButtonPresenter.init({
-  onClick: tripPresenter.createPointButtonClickHandler,
+newPointButtonPresenter.init({
+  onClick: tripPresenter.createNewPointButtonClickHandler,
 });
 
 tripPresenter.init();

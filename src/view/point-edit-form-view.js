@@ -16,14 +16,14 @@ export default class PointEditFormView extends AbstractStatefulView{
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({point = BLANK_POINT, offers, destinations, onEditFormReset, onEditFormSubmit, onEditFormDelete, editFormType = EditType.EDITING}) {
+  constructor({point = BLANK_POINT, offers, destinations, onPointEditFormReset, onPointEditFormSubmit, onPointEditFormDelete, pointEditType = EditType.EDITING}) {
     super();
     this.#offers = offers;
     this.#destinations = destinations;
-    this.#handleEditFormReset = onEditFormReset;
-    this.#handleEditFormSubmit = onEditFormSubmit;
-    this.#handleEditFormDelete = onEditFormDelete;
-    this.#editFormType = editFormType;
+    this.#handleEditFormReset = onPointEditFormReset;
+    this.#handleEditFormSubmit = onPointEditFormSubmit;
+    this.#handleEditFormDelete = onPointEditFormDelete;
+    this.#editFormType = pointEditType;
 
     this._setState(PointEditFormView.parsePointToState({point}));
     this._restoreHandlers();
