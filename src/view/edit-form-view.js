@@ -1,24 +1,38 @@
-import { createPointEditTemplate } from '../templates/point-edit-template.js';
+import { createEditFormTemplate } from '../templates/point-edit-template.js';
 import { DEFAULT_POINT } from '../consts.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
+import { EditType } from '../consts.js';
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+
+
+const BLANK_POINT = {
+  type: 'flight',
+  dateFrom: '',//humanizeDate(null, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+  dateTo: '',//humanizeDate(null, 'YYYY-MM-DDTHH:mm:ss.SSSZ'),
+  basePrice: 0,
+  offers: [],
+  destination: null
+};
 
 export default class EditFormView extends AbstractStatefulView{
   #offers = null;
   #destinations = null;
-  #onEditFormReset = null;
-  #onEditFormSubmit = null;
-
+  #handleEditFormReset = null;
+  #handleEditFormSubmit = null;
+  #handleEditFormDelete = null;
+  #editFormType = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({point = DEFAULT_POINT, offers = [], destinations, onEditFormReset, onEditFormSubmit}) {
+  constructor({point = BLANK_POINT, offers, destinations, onEditFormReset, onEditFormSubmit, onEditFormDelete, editFormType = EditType.EDITING}) {
     super();
     this.#offers = offers;
     this.#destinations = destinations;
-    this.#onEditFormReset = onEditFormReset;
-    this.#onEditFormSubmit = onEditFormSubmit;
+    this.#handleEditFormReset = onEditFormReset;
+    this.#handleEditFormSubmit = onEditFormSubmit;
+    this.#handleEditFormDelete = onEditFormDelete;
+    this.#editFormType = editFormType;
 
     this._setState(EditFormView.parsePointToState({point}));
     this._restoreHandlers();
@@ -40,13 +54,26 @@ export default class EditFormView extends AbstractStatefulView{
   reset = (point) => this.updateElement({ point });
 
   _restoreHandlers = () => {
+    // console.log(this.#type);
+    if (this.#editFormType === EditType.EDITING) {
+      this.element
+        .querySelector('.event__rollup-btn')
+        .addEventListener('click', this.#resetClickHandler);
+
+      this.element
+        .querySelector('.event__reset-btn')
+        .addEventListener('click', this.#deleteClickHandler);
+    }
+
+    if (this.#editFormType === EditType.CREATING) {
+      this.element
+        .querySelector('.event__reset-btn')
+        .addEventListener('click', this.#resetClickHandler);
+    }
+
     this.element
       .querySelector('form')
       .addEventListener('submit', this.#submitClickHandler);
-
-    this.element
-      .querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#resetClickHandler);
 
     this.element
       .querySelector('.event__type-group')
@@ -60,15 +87,22 @@ export default class EditFormView extends AbstractStatefulView{
       .querySelector('.event__input--price')
       .addEventListener('change', this.#priceChangeHandler);
 
+    console.log(this.element.querySelector('.event__available-offers'));
     this.element
       .querySelector('.event__available-offers')
       .addEventListener('change', this.#offerChangeHandler);
+
     this.#setDatepickerFromHandler();
     this.#setDatepickerToHandler();
   };
 
   get template() {
-    return createPointEditTemplate(this._state.point, this.#offers, this.#destinations);
+    return createEditFormTemplate({
+      point: this._state.point,
+      offers: this.#offers,
+      destinations: this.#destinations,
+      editPointType: this.#editFormType,
+    });
   }
 
   #tripPointDateFromChangeHandler = ([userDate]) => {
@@ -113,14 +147,19 @@ export default class EditFormView extends AbstractStatefulView{
     }
   };
 
+  #deleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleEditFormDelete(EditFormView.parseStateToPoint(this._state));
+  };
+
   #resetClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onEditFormReset();
+    this.#handleEditFormReset();
   };
 
   #submitClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onEditFormSubmit(EditFormView.parseStateToPoint(this._state));
+    this.#handleEditFormSubmit(EditFormView.parseStateToPoint(this._state));
   };
 
   #typeChangeHandler = (evt) => {
@@ -145,6 +184,7 @@ export default class EditFormView extends AbstractStatefulView{
 
   #destinationChangeHandler = (evt) => {
     const selectedDestination = this.#destinations.find((destination) => destination.name === evt.target.value).id;
+
     this.updateElement({
       point: {
         ...this._state.point,

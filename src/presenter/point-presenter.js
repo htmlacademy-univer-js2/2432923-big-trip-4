@@ -1,7 +1,9 @@
 import PointView from '../view/point-view';
 import EditFormView from '../view/edit-form-view';
-import { Mode } from '../consts';
+import { Mode, UpdateType, UserAction } from '../consts';
 import { render, replace, remove } from '../framework/render';
+import { isMajorDifference } from '../utils';
+import { EditType } from '../consts';
 
 export default class PointPresenter {
   #pointListContainer = null;
@@ -12,8 +14,8 @@ export default class PointPresenter {
   #destinationModel = null;
   #offerModel = null;
 
-  #handleDataChange = null;
-  #handleModeChange = null;
+  #onDataChange = null;
+  #onModeChange = null;
 
   #pointComponent = null;
   #editFormComponent = null;
@@ -22,8 +24,8 @@ export default class PointPresenter {
     this.#pointListContainer = pointListContainer;
     this.#destinationModel = destinationModel;
     this.#offerModel = offerModel;
-    this.#handleDataChange = handleDataChange;
-    this.#handleModeChange = handleModeChange;
+    this.#onDataChange = handleDataChange;
+    this.#onModeChange = handleModeChange;
   }
 
   init(point) {
@@ -33,19 +35,23 @@ export default class PointPresenter {
 
     this.#pointComponent = new PointView({
       point: this.#point,
-      offers: this.#offerModel.getOffersByType(this.#point.type),
-      destination: this.#destinationModel.getDestinationById(point.destination),
+      offers: this.#offerModel.getByType(this.#point.type),
+      destination: this.#destinationModel.getById(point.destination),
       onEditFormClick: this.#editFormClickHandler,
       onFavoriteClick: this.#favoriteClickHandler
     });
 
     this.#editFormComponent = new EditFormView({
       point: this.#point,
-      offers: this.#offerModel.getOffers(),
-      destinations: this.#destinationModel.getAllDestinations(),
+      offers: this.#offerModel.get(),
+      destinations: this.#destinationModel.get(),
       onEditFormReset: this.#editFormResetHandler,
-      onEditFormSubmit: this.#editFormSubmitHandler
+      onEditFormSubmit: this.#editFormSubmitHandler,
+      onEditFormDelete: this.#editFormDeleteHandler,
+      editFormType: EditType.EDITING,
     });
+
+    // console.log(this.#editFormComponent);
 
     if (!prevPointComponent || !prevEditFormComponent) {
       render(this.#pointComponent, this.#pointListContainer);
@@ -64,13 +70,6 @@ export default class PointPresenter {
     remove(prevPointComponent);
   }
 
-  resetView() {
-    if (this.#mode === Mode.EDITING) {
-      this.#editFormComponent.reset(this.#point);
-      this.#switchToPoint();
-    }
-  }
-
   destroy() {
     remove(this.#pointComponent);
     remove(this.#editFormComponent);
@@ -79,7 +78,7 @@ export default class PointPresenter {
   #switchToEditForm = () => {
     replace(this.#editFormComponent, this.#pointComponent);
     document.addEventListener('keydown', this.#onDocumentEscKeydown);
-    this.#handleModeChange();
+    this.#onModeChange();
     this.#mode = Mode.EDITING;
   };
 
@@ -97,11 +96,21 @@ export default class PointPresenter {
     }
   };
 
+  resetView() {
+    if (this.#mode === Mode.EDITING) {
+      this.#editFormComponent.reset(this.#point);
+      this.#switchToPoint();
+    }
+  }
+
   #favoriteClickHandler = () => {
-    this.#handleDataChange({
-      ...this.#point,
-      isFavorite: !this.#point.isFavorite,
-    });
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      UpdateType.MINOR,
+      {
+        ...this.#point,
+        isFavorite: !this.#point.isFavorite,
+      });
   };
 
   #editFormClickHandler = () => {
@@ -116,8 +125,26 @@ export default class PointPresenter {
   };
 
   #editFormSubmitHandler = (updatePoint) => {
-    this.#point = updatePoint;
+    const isMinor = isMajorDifference(updatePoint, this.#point);
+
+    this.#onDataChange(
+      UserAction.UPDATE_POINT,
+      isMinor ? UpdateType.MINOR : UpdateType.PATCH,
+      updatePoint
+    );
+
+    // this.#point = updatePoint;
     this.#switchToPoint();
     document.removeEventListener('keydown', this.escKeydownHandler);
   };
+
+  #editFormDeleteHandler = (point) => {
+    // console.log('delete Блять');
+    this.#onDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
+  };
+
 }

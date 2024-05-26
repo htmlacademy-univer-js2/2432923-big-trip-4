@@ -1,4 +1,4 @@
-import { DESTINATIONS, POINT_TYPES } from '../consts';
+import { DESTINATIONS, EditType, POINT_TYPES } from '../consts';
 import { getRandomInteger } from '../utils';
 import dayjs from 'dayjs';
 
@@ -51,11 +51,22 @@ function createPicturesSection(pictures) {
   </div>` : '';
 }
 
-export function createPointEditTemplate (point, offers, destinations) {
+// function createEditFormButtonsTemplate(editPointType) {
+
+//   return `<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
+//   <button class="event__reset-btn" type="reset">Delete</button>
+//   <button class="event__rollup-btn" type="button">
+//     <span class="visually-hidden">Open event</span>
+//   </button>`;
+// }
+
+export function createEditFormTemplate ({point, offers, destinations, editPointType}) {
+  // console.log(offers);
   const { basePrice, dateFrom, dateTo, type } = point;
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
-  const currentOffers = offers.find((offer) => offer.type === type).offers;
-
+  const currentOffers = offers.find((offer) => offer.type === type)?.offers;
+  console.log(type);
+  // console.log(editPointType);
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -70,16 +81,16 @@ export function createPointEditTemplate (point, offers, destinations) {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${ type }
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ currentDestination.name }" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ currentDestination ? currentDestination.name : '' }" list="destination-list-1">
         ${ createDestinationList() }
       </div>
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dayjs(dateFrom).format('DD/MM/YY HH:mm')}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFrom ? dayjs(dateFrom).format('DD/MM/YY HH:mm') : ''}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dayjs(dateTo).format('DD/MM/YY HH:mm')}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateTo ? dayjs(dateTo).format('DD/MM/YY HH:mm') : ''}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -90,23 +101,25 @@ export function createPointEditTemplate (point, offers, destinations) {
         <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${ basePrice }">
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
+      <button class="event__reset-btn" type="reset">${editPointType === EditType.CREATING ? 'Cancel' : 'Delete'}</button>
+      ${editPointType === EditType.EDITING ? `<button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
-      </button>
+      </button>` : ''}
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-        ${ createOfferSelector(currentOffers) }
+
+        ${ currentOffers ? createOfferSelector(currentOffers) : ''}
       </section>
       <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">${ currentDestination.name }</h3>
-        <p class="event__destination-description">${ currentDestination.description }</p>
-        ${ createPicturesSection(currentDestination.pictures) }
+        <h3 class="event__section-title  event__section-title--destination">${ currentDestination ? currentDestination.name : '' }</h3>
+        <p class="event__destination-description">${ currentDestination ? currentDestination.description : ''}</p>
+        ${ currentDestination ? createPicturesSection(currentDestination.pictures) : '' }
       </section>
     </section>
   </form>
   </li>`;
 }
 
+//${ currentOffers ? createOfferSelector(currentOffers) : ''}

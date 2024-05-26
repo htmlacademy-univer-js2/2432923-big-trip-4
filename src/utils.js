@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import { SortType } from './consts';
+import { FilterType } from './consts';
 dayjs.extend(duration);
 
 export const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
@@ -54,3 +55,21 @@ export const sort = (points, sortType = SortType.DAY) => {
   }
   return sortMethod[sortType](points);
 };
+
+export const filter = {
+  [FilterType.EVERYTHING]: (points) => points,
+  [FilterType.FUTURE]: (points) => points.filter((point) => isFutureDate(point.dateFrom)),
+  [FilterType.PRESENT]: (points) => points.filter((point) => isPresentDate(point.dateFrom, point.dateTo)),
+  [FilterType.PAST]: (points) => points.filter((point) => isPastDate(point.dateTo)),
+};
+
+export const isMajorDifference = (pointA, pointB) => {
+  const aPointDuration = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const bPointDuration = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+
+  return pointA.dateFrom !== pointB.dateFrom ||
+  pointA.basePrice !== pointB.basePrice ||
+  aPointDuration !== bPointDuration;
+};
+
+

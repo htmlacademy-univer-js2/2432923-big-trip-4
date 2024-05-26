@@ -3,11 +3,8 @@ import { createEmptyPointListTemplate } from '../templates/empty-point-list-temp
 
 
 export default class EmptyPointListView extends AbstractView{
-  #points;
-
-  constructor(points) {
+  constructor() {
     super();
-    this.#points = points;
   }
 
   get template() {

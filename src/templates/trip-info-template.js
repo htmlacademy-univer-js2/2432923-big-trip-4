@@ -1,6 +1,6 @@
 const createRouteElement = (points, destinationModel) => {
   const destinationIds = Array.from(points, (point) => (point.destination));
-  const destinationNames = destinationIds.map((destinationId) => (destinationModel.getDestinationById(destinationId))).map((destination) => destination.name);
+  const destinationNames = destinationIds.map((destinationId) => (destinationModel.getById(destinationId))).map((destination) => destination.name);
 
   return `<h1 class="trip-info__title">
     ${ destinationNames.map((name) => `${ name }`).join(' &mdash; ')}
