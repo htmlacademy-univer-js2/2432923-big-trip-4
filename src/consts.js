@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
-import { isFutureDate, isPastDate, isPresentDate } from './utils';
 dayjs.extend(isSameOrBefore);
 dayjs.extend(isSameOrAfter);
 dayjs.extend(duration);
@@ -70,13 +69,6 @@ export const FilterType = {
   PAST: 'past',
 };
 
-export const filter = {
-  [FilterType.EVERYTHING]: (points) => points,
-  [FilterType.FUTURE]: (points) => points.filter((point) => isFutureDate(point.dateFrom)),
-  [FilterType.PRESENT]: (points) => points.filter((point) => isPresentDate(point.dateFrom, point.dateTo)),
-  [FilterType.PAST]: (points) => points.filter((point) => isPastDate(point.dateTo)),
-};
-
 export const Mode = {
   DEFAULT: 'default',
   EDITING: 'editing',
@@ -96,4 +88,21 @@ export const enabledSortType = {
   [SortType.TIME]: true,
   [SortType.PRICE]: true,
   [SortType.OFFER]: false,
+};
+
+export const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR'
+};
+
+export const UserAction = {
+  UPDATE_POINT: 'UPDATE',
+  ADD_POINT: 'ADD',
+  DELETE_POINT: 'DELETE',
+};
+
+export const EditType = {
+  EDITING: 'EDITING',
+  CREATING: 'CREATING',
 };

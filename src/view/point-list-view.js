@@ -3,11 +3,9 @@ import AbstractView from '../framework/view/abstract-view.js';
 
 
 export default class PointListView extends AbstractView{
-  #points;
 
-  constructor(points) {
+  constructor() {
     super();
-    this.#points = points;
   }
 
   get template() {
