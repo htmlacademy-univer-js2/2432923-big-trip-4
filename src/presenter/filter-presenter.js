@@ -4,6 +4,7 @@ import { UpdateType } from '../consts';
 
 import FilterView from '../view/filter-view';
 
+
 export default class FilterPresenter {
   #filterContainer = null;
   #filterComponent = null;
