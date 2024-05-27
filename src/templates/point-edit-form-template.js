@@ -1,4 +1,4 @@
-import { DESTINATIONS, EditType, POINT_TYPES } from '../consts';
+import { EditType, POINT_TYPES } from '../consts';
 import dayjs from 'dayjs';
 import he from 'he';
 import { getLastWord } from '../utils';
@@ -22,7 +22,7 @@ function createEventSelector() {
 }
 
 function createDestinationList(destinations) {
-  console.log(destinations);
+  // console.log(destinations);
   return `<datalist id="destination-list-1">
   ${ destinations.map((destination) => `<option value="${ destination.name }"></option>`).join('') }
   </datalist>`;
