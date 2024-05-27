@@ -1,10 +1,10 @@
-import PointsModel from './model/point-model';
+import PointsModel from './model/points-model';
 import TripPresenter from './presenter/trip-presenter';
 import DestinationModel from './model/destination-model';
-import OffersModel from './model/offer-model';
+import OffersModel from './model/offers-model';
 import FilterModel from './model/filter-model';
 import FilterPresenter from './presenter/filter-presenter';
-import CreatePointButtonPresenter from './presenter/create-point-button-presenter';
+import NewPointButtonPresenter from './presenter/new-point-button-presenter';
 import { RenderPosition, render } from './framework/render';
 import TripInfoView from './view/trip-info-view';
 
@@ -22,23 +22,21 @@ const destinationModel = new DestinationModel();
 const offersModel = new OffersModel();
 const pointsModel = new PointsModel();
 const filterModel = new FilterModel();
-//console.log(filterModel);
 
-const createPointButtonPresenter = new CreatePointButtonPresenter({
-  container: container.tripInfo,
+const newPointButtonPresenter = new NewPointButtonPresenter({
+  newPointButtonContainer: container.tripInfo,
 });
-console.log(createPointButtonPresenter);
 
 const tripPresenter = new TripPresenter({
-  container,
+  tripContainer: container.events,
   pointsModel,
   offersModel,
   destinationModel,
   filterModel,
-  createPointButtonPresenter,
+  newPointButtonPresenter,
 });
 
-render(new TripInfoView(pointsModel.points, destinationModel), container.tripInfo, RenderPosition.AFTERBEGIN);
+render(new TripInfoView(pointsModel.get(), destinationModel), container.tripInfo, RenderPosition.AFTERBEGIN);
 
 const filterPresenter = new FilterPresenter({
   filterContainer: container.filter,
@@ -46,9 +44,10 @@ const filterPresenter = new FilterPresenter({
   filterModel
 });
 
-createPointButtonPresenter.init({
-  onClick: tripPresenter.createPointButtonClickHandler,
+newPointButtonPresenter.init({
+  onClick: tripPresenter.createNewPointButtonClickHandler,
 });
 
 tripPresenter.init();
 filterPresenter.init();
+// console.log(filterModel);

@@ -1,52 +1,50 @@
-import FilterView from '../view/filter-view';
 import { remove, render, replace } from '../framework/render';
 import { filter } from '../utils';
 import { UpdateType } from '../consts';
 
+import FilterView from '../view/filter-view';
+
 export default class FilterPresenter {
   #filterContainer = null;
+  #filterComponent = null;
 
   #pointsModel;
   #filterModel = null;
 
-  #filterComponent = null;
-
   constructor({filterContainer, pointsModel, filterModel}) {
-    this.#filterContainer = filterContainer; //вопросик по передаче нужного контейнера
+    this.#filterContainer = filterContainer;
 
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
     this.#pointsModel.addObserver(this.#modelChangeHandler);
-    this.#filterModel.addObserver(this.#modelChangeHandler);
   }
 
   get filters() {
-    const points = this.#pointsModel.points;
-
-    return Object.entries(filter).map(([filterType, filterPoints]) =>
+    const points = this.#pointsModel.get();
+    const result = Object.entries(filter).map(([filterType, filterPoints]) =>
       ({
         type: filterType,
         isDisabled: filterPoints(points).length === 0,
       }),
     );
+
+    return result;
   }
 
   init(){
     const prevFilterComponent = this.#filterComponent;
 
     this.#filterComponent = new FilterView({
-      //проверить аргументы во view
-      filters: this.filters,
-      currentFilterType: this.#filterModel.filter,
-      onFilterTypeChange: this.#filterTypeChangeHandler,
+      items: this.filters,
+      onItemChange: this.#filterTypeChangeHandler,
     });
 
     if (prevFilterComponent === null) {
       render(this.#filterComponent, this.#filterContainer);
       return;
     }
-    // console.log(this.#filterComponent, prevFilterComponent);
+
     replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
   }
@@ -55,6 +53,7 @@ export default class FilterPresenter {
     if (this.#filterModel.filter === filterType) {
       return;
     }
+
     this.#filterModel.set(UpdateType.MAJOR, filterType);
   };
 

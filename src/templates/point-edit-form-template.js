@@ -1,6 +1,7 @@
-import { DESTINATIONS, EditType, POINT_TYPES } from '../consts';
-import { getRandomInteger } from '../utils';
+import { EditType, POINT_TYPES } from '../consts';
 import dayjs from 'dayjs';
+import he from 'he';
+import { getLastWord } from '../utils';
 
 function createEventItems() {
   return POINT_TYPES.map((type) => (
@@ -20,27 +21,11 @@ function createEventSelector() {
   </div>`;
 }
 
-function createDestinationList() {
+function createDestinationList(destinations) {
+  // console.log(destinations);
   return `<datalist id="destination-list-1">
-  ${ DESTINATIONS.map((destination) => `<option value="${ destination }"></option>`).join('') }
+  ${ destinations.map((destination) => `<option value="${ destination.name }"></option>`).join('') }
   </datalist>`;
-}
-function createOfferItem(offer) {
-  const checkedClassname = getRandomInteger(1) ? 'checked' : '';
-  return `<div class="event__offer-selector">
-  <input class="event__offer-checkbox  visually-hidden" id="${ offer.id }" type="checkbox" name="event-offer-luggage" ${ checkedClassname }>
-  <label class="event__offer-label" for="${ offer.id }">
-    <span class="event__offer-title">${ offer.title }</span>
-    &plus;&euro;&nbsp;
-    <span class="event__offer-price">${ offer.price }</span>
-  </label>
-  </div>`;
-}
-
-function createOfferSelector(offersByPointType) {
-  return `<div class="event__available-offers">
-  ${ offersByPointType.map((offer) => createOfferItem(offer)).join('') }
-</div>`;
 }
 
 function createPicturesSection(pictures) {
@@ -51,22 +36,44 @@ function createPicturesSection(pictures) {
   </div>` : '';
 }
 
-// function createEditFormButtonsTemplate(editPointType) {
+function createCurrentDestinationBlock(currentDestination) {
+  return currentDestination ? `<section class="event__section  event__section--destination">
+  <h3 class="event__section-title  event__section-title--destination">${ currentDestination.name }</h3>
+  <p class="event__destination-description">${ currentDestination.description }</p>
+  ${ createPicturesSection(currentDestination.pictures) }
+</section>` : '';
+}
 
-//   return `<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-//   <button class="event__reset-btn" type="reset">Delete</button>
-//   <button class="event__rollup-btn" type="button">
-//     <span class="visually-hidden">Open event</span>
-//   </button>`;
-// }
+function createOffersSelector({ offers, currentOffers }) {
+  function createOfferItem() {
+    return currentOffers.map((item) => {
+      const checkedClassname = offers.some((curValue) => (curValue === item.id)) ? 'checked' : '';
+      const slug = getLastWord(item.title);
+      return `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${slug}-${item.id}" type="checkbox" name="event-offer-${slug}" ${checkedClassname}>
+      <label class="event__offer-label" for="event-offer-${slug}-${item.id}">
+        <span class="event__offer-title">${item.title}</span>
+        &plus;&euro;&nbsp;
+        <span class="event__offer-price">${item.price}</span>
+      </label>
+    </div>`;
+    }).join('');
+  }
 
-export function createEditFormTemplate ({point, offers, destinations, editPointType}) {
-  // console.log(offers);
-  const { basePrice, dateFrom, dateTo, type } = point;
+  return currentOffers ? `<section class="event__section  event__section--offers">
+  <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+  <div class="event__available-offers">
+    ${createOfferItem()}
+  </div>
+</section>` : '';
+}
+
+export function createPointEditFormTemplate ({point, pointOffers, destinations, editPointType}) {
+  // console.log(destinations);
+  const { basePrice, dateFrom, dateTo, offers, type } = point;
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
-  const currentOffers = offers.find((offer) => offer.type === type)?.offers;
-  console.log(type);
-  // console.log(editPointType);
+  const currentOffers = pointOffers.find((offer) => offer.type === type)?.offers;
+
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
     <header class="event__header">
@@ -81,8 +88,8 @@ export function createEditFormTemplate ({point, offers, destinations, editPointT
         <label class="event__label  event__type-output" for="event-destination-1">
           ${ type }
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${ currentDestination ? currentDestination.name : '' }" list="destination-list-1">
-        ${ createDestinationList() }
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination-1" value="${currentDestination ? he.encode(currentDestination.name) : ''}" list="destination-list-1">
+        ${ createDestinationList(destinations) }
       </div>
 
       <div class="event__field-group  event__field-group--time">
@@ -98,7 +105,7 @@ export function createEditFormTemplate ({point, offers, destinations, editPointT
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${ basePrice }">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(basePrice.toString())}">
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">${editPointType === EditType.CREATING ? 'Cancel' : 'Delete'}</button>
@@ -107,19 +114,11 @@ export function createEditFormTemplate ({point, offers, destinations, editPointT
       </button>` : ''}
     </header>
     <section class="event__details">
-      <section class="event__section  event__section--offers">
-        <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-
-        ${ currentOffers ? createOfferSelector(currentOffers) : ''}
-      </section>
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">${ currentDestination ? currentDestination.name : '' }</h3>
-        <p class="event__destination-description">${ currentDestination ? currentDestination.description : ''}</p>
-        ${ currentDestination ? createPicturesSection(currentDestination.pictures) : '' }
-      </section>
+      ${createOffersSelector({ offers, currentOffers })}
+      ${createCurrentDestinationBlock(currentDestination)}
     </section>
   </form>
   </li>`;
 }
 
-//${ currentOffers ? createOfferSelector(currentOffers) : ''}
+

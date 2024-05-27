@@ -5,15 +5,15 @@ export default class PointView extends AbstractView{
   #point;
   #offers;
   #destination;
-  #onEditFormClick;
+  #onPointEditFormClick;
   #onFavoriteClick;
 
-  constructor({point, offers, destination, onEditFormClick, onFavoriteClick}) {
+  constructor({point, offers, destination, onPointEditFormClick, onFavoriteClick}) {
     super();
     this.#point = point;
     this.#offers = offers;
     this.#destination = destination;
-    this.#onEditFormClick = onEditFormClick;
+    this.#onPointEditFormClick = onPointEditFormClick;
     this.#onFavoriteClick = onFavoriteClick;
 
     this.#addPointHandlers();
@@ -34,7 +34,7 @@ export default class PointView extends AbstractView{
 
   #editClickHandler = (evt) => {
     evt.preventDefault();
-    this.#onEditFormClick();
+    this.#onPointEditFormClick();
   };
 
   #favoriteClickHandler = (evt) => {

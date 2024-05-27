@@ -1,7 +1,7 @@
 import AbstractView from '../framework/view/abstract-view';
-import { createNewPointButtonTemplate } from '../templates/create-point-button-template';
+import { createNewPointButtonTemplate } from '../templates/new-point-button-template';
 
-export default class CreatePointButtonView extends AbstractView {
+export default class NewPointButtonView extends AbstractView {
   #handleClick = null;
 
   constructor({ onClick }) {
