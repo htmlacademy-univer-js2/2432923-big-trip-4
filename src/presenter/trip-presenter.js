@@ -61,6 +61,7 @@ export default class TripPresenter {
     this.#renderTrip();
   }
 
+
   #viewActionHandler = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_POINT:
