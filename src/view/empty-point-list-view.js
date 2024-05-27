@@ -1,6 +1,7 @@
+import { EmptyListMessage } from '../consts.js';
+
 import AbstractView from '../framework/view/abstract-view.js';
 import { createEmptyPointListTemplate } from '../templates/empty-point-list-template.js';
-import { EmptyListMessage } from '../consts.js';
 
 
 export default class EmptyPointListView extends AbstractView{

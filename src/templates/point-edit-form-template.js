@@ -21,9 +21,10 @@ function createEventSelector() {
   </div>`;
 }
 
-function createDestinationList() {
+function createDestinationList(destinations) {
+  console.log(destinations);
   return `<datalist id="destination-list-1">
-  ${ DESTINATIONS.map((destination) => `<option value="${ destination }"></option>`).join('') }
+  ${ destinations.map((destination) => `<option value="${ destination.name }"></option>`).join('') }
   </datalist>`;
 }
 
@@ -68,6 +69,7 @@ function createOffersSelector({ offers, currentOffers }) {
 }
 
 export function createPointEditFormTemplate ({point, pointOffers, destinations, editPointType}) {
+  // console.log(destinations);
   const { basePrice, dateFrom, dateTo, offers, type } = point;
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
   const currentOffers = pointOffers.find((offer) => offer.type === type)?.offers;
@@ -86,8 +88,8 @@ export function createPointEditFormTemplate ({point, pointOffers, destinations, 
         <label class="event__label  event__type-output" for="event-destination-1">
           ${ type }
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentDestination ? he.encode(currentDestination.name) : ''}" list="destination-list-1">
-        ${ createDestinationList() }
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination-1" value="${currentDestination ? he.encode(currentDestination.name) : ''}" list="destination-list-1">
+        ${ createDestinationList(destinations) }
       </div>
 
       <div class="event__field-group  event__field-group--time">

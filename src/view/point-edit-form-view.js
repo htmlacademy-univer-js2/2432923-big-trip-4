@@ -2,10 +2,11 @@
 
 // Выбор дополнительных опций влияет на общую стоимость путешествия. Стоимость точки маршрута, которую ввёл пользователь в соответствующее поле ввода, при этом не изменяется.
 
+import { DEFAULT_POINT, EditType } from '../consts.js';
+
 import { createPointEditFormTemplate } from '../templates/point-edit-form-template.js';
-import { DEFAULT_POINT } from '../consts.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-import { EditType } from '../consts.js';
+
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 

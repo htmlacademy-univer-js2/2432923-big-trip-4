@@ -1,8 +1,7 @@
-import { SortType } from '../consts';
-import { enabledSortType } from '../consts';
+import { SortType , enabledSortType} from '../consts';
+import { render, remove } from '../framework/render';
+
 import SortView from '../view/sort-view';
-import { render } from '../framework/render';
-import { remove } from '../framework/render';
 
 export default class SortPresenter {
   #sortContainer = null;

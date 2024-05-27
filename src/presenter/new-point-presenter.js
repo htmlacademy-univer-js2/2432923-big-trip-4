@@ -1,7 +1,5 @@
-import { RenderPosition, render } from '../framework/render';
-import { UserAction, UpdateType } from '../consts';
-import { remove } from '../framework/render';
-import { EditType } from '../consts';
+import { RenderPosition, render, remove } from '../framework/render';
+import { UserAction, UpdateType, EditType } from '../consts';
 
 import PointEditFormView from '../view/point-edit-form-view';
 
