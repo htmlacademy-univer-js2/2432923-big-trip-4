@@ -14,6 +14,7 @@ function createOffersListTemplate(currentOffers, offers) {
   </ul>`;
 }
 
+
 export function createPointTemplate (point, offersByPointType, destination){
   const { basePrice, dateFrom, dateTo, isFavorite, offers, type } = point;
   const favouriteClassname = isFavorite ? 'event__favorite-btn--active' : '';
