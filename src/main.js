@@ -7,6 +7,8 @@ import FilterPresenter from './presenter/filter-presenter';
 import NewPointButtonPresenter from './presenter/new-point-button-presenter';
 import { RenderPosition, render } from './framework/render';
 import TripInfoView from './view/trip-info-view';
+import PointsApiService from './service/points-api-service';
+import { AUTHORIZATION, END_POINT } from './consts';
 
 const filterContainer = document.querySelector('.trip-controls__filters');
 const tripInfoContainer = document.querySelector('.trip-main');
@@ -17,10 +19,11 @@ const container = {
   tripInfo: tripInfoContainer,
   events: eventsContainer
 };
+const service = new PointsApiService(END_POINT, AUTHORIZATION);
 
-const destinationModel = new DestinationModel();
-const offersModel = new OffersModel();
-const pointsModel = new PointsModel();
+const destinationModel = new DestinationModel({service});
+const offersModel = new OffersModel({service});
+const pointsModel = new PointsModel({service, destinationModel, offersModel});
 const filterModel = new FilterModel();
 
 const newPointButtonPresenter = new NewPointButtonPresenter({
@@ -36,7 +39,7 @@ const tripPresenter = new TripPresenter({
   newPointButtonPresenter,
 });
 
-render(new TripInfoView(pointsModel.get(), destinationModel), container.tripInfo, RenderPosition.AFTERBEGIN);
+render(new TripInfoView(), container.tripInfo, RenderPosition.AFTERBEGIN);
 
 const filterPresenter = new FilterPresenter({
   filterContainer: container.filter,
@@ -50,4 +53,3 @@ newPointButtonPresenter.init({
 
 tripPresenter.init();
 filterPresenter.init();
-// console.log(filterModel);

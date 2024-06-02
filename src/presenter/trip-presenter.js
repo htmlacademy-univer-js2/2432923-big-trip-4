@@ -58,6 +58,7 @@ export default class TripPresenter {
   }
 
   init() {
+    this.#pointsModel.init();
     this.#renderTrip();
   }
 
@@ -87,6 +88,12 @@ export default class TripPresenter {
         break;
       case UpdateType.MAJOR:
         this.#clearTrip({ resetSortType: true });
+        this.#renderTrip();
+        break;
+      case UpdateType.INIT:
+        // this.#isLoadingError = data.isError;
+        // this.#isLoading = false;
+        this.#clearTrip();
         this.#renderTrip();
         break;
     }

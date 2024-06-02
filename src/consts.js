@@ -100,7 +100,8 @@ export const enabledSortType = {
 export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
-  MAJOR: 'MAJOR'
+  MAJOR: 'MAJOR',
+  INIT: 'INIT',
 };
 
 export const UserAction = {
@@ -119,4 +120,11 @@ export const EmptyListMessage = {
   [FilterType.FUTURE]: 'There are no future events now',
   [FilterType.PRESENT]: 'There are no present events now',
   [FilterType.PAST]: 'There are no past events now'
+};
+
+export const AUTHORIZATION = 'Basic ahsjdssdghidfghjvf838hekhu';
+export const END_POINT = 'https://21.objects.htmlacademy.pro/big-trip';
+export const Method = {
+  PUT: 'PUT',
+  GET: 'GET',
 };
