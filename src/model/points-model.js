@@ -56,12 +56,13 @@ export default class PointsModel extends Observable {
 
   async add(updateType, point) {
     try{
-      // const response = await this.#service.addPoint(point);
-      // const adaptedPoint = adaptToClient(response);
+      const response = await this.#service.addPoint(point);
+      // console.log(response);
+      const adaptedPoint = adaptToClient(response);
       // console.log(adaptedPoint);
-      const newPoint = {...point,/*adapted*/ id: crypto.randomUUID()};
+      // const newPoint = {...point,/*adapted*/ id: crypto.randomUUID()};
       this.#points = [
-        newPoint,
+        adaptedPoint,
         ...this.#points
       ];
       this._notify(updateType, point/*adapted*/);
@@ -72,13 +73,12 @@ export default class PointsModel extends Observable {
 
   async delete(updateType, point) {
     try {
-      // await this.#service.deletePoint(point);
       const index = this.#points.findIndex((p) => p.id === point.id);
 
       if (index === -1) {
         throw new Error('Can\'t delete unexisting point');
       }
-
+      await this.#service.deletePoint(point);
       this.#points = [
         ...this.#points.slice(0, index),
         ...this.#points.slice(index + 1),

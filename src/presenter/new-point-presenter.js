@@ -52,6 +52,9 @@ export default class NewPointPresenter {
   };
 
   #handlePointEditFormSubmit = (point) => {
+    // console.log(point);
+    // // const newPoint = {...point, id: crypto.randomUUID()};
+    // // console.log(newPoint);
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,

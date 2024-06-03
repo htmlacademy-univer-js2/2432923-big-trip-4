@@ -15,24 +15,6 @@ export default class PointsApiService extends ApiService {
     return this._load({url: 'points'}).then(ApiService.parseResponse);
   }
 
-  // get points() {
-  //   return this._load({url: 'points'}).then(ApiService.parseResponse);
-  // }
-
-  // async updatePoint(point) {
-  //   const response = await this._load({
-  //     url: `points/${point.id}`,
-  //     method: 'PUT',
-  //     body: JSON.stringify(adaptToServer(point)),
-  //     headers: new Headers({'Content-Type': 'application/json'}),
-  //   });
-  //   console.log(response);
-
-  //   const parsedResponse = await ApiService.parseResponse(response);
-
-  //   return parsedResponse;
-  // }
-
   async updatePoint(update) {
     const response = await this._load({
       url: `points/${update.id}`,
@@ -45,24 +27,22 @@ export default class PointsApiService extends ApiService {
     return parsedResponse;
   }
 
-  // async addPoint(point) {
-  //   const response = await this._load({
-  //     url: 'points',
-  //     method: 'POST',
-  //     body: JSON.stringify(adaptToServer(point)),
-  //     headers: new Headers({'Content-Type': 'application/json'}),
-  //   });
+  async addPoint(point) {
+    const response = await this._load({
+      url: 'points',
+      method: Method.POST,
+      body: JSON.stringify(adaptToServer(point)),
+      headers: new Headers({'Content-Type': 'application/json'}),
+    });
 
-  //   const parsedResponse = await ApiService.parseResponse(response);
-  //   return parsedResponse;
-  // }
+    const parsedResponse = await ApiService.parseResponse(response);
+    return parsedResponse;
+  }
 
-  // async deletePoint(point) {
-  //   await this._load({
-  //     url: `points/${point.id}`,
-  //     method: Method.DELETE,
-  //   });
-  // }
-  addPoint = (data) => ({...data, id: crypto.randomUUID()});
-  deletePoint = () => {};
+  async deletePoint(point) {
+    await this._load({
+      url: `points/${point.id}`,
+      method: Method.DELETE,
+    });
+  }
 }
