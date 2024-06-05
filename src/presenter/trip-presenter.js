@@ -1,5 +1,5 @@
 import { sort, filter } from '../utils.js';
-import { UpdateType, UserAction, SortType, FilterType } from '../consts.js';
+import { UpdateType, UserAction, SortType, FilterType, TimeLimit } from '../consts.js';
 import { render, remove } from '../framework/render.js';
 
 import EmptyPointListView from '../view/empty-point-list-view.js';
@@ -9,6 +9,8 @@ import LoadingView from '../view/loading-view.js';
 import PointPresenter from './point-presenter.js';
 import SortPresenter from './sort-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
+
+import UiBlocker from '../framework/ui-blocker/ui-blocker';
 
 export default class TripPresenter {
   #tripContainer = null;
@@ -31,6 +33,11 @@ export default class TripPresenter {
   #loadingComponent = new LoadingView();
   #pointsListComponent = new PointListView();
   #emptyPointListComponent = null;
+
+  #uiBlocker = new UiBlocker({
+    lowerLimit: TimeLimit.LOWER_LIMIT,
+    upperLimit: TimeLimit.UPPER_LIMIT
+  });
 
   constructor ({tripContainer, pointsModel, offersModel, destinationModel, filterModel, newPointButtonPresenter}) {
     this.#tripContainer = tripContainer;
@@ -67,18 +74,37 @@ export default class TripPresenter {
   }
 
 
-  #viewActionHandler = (actionType, updateType, update) => {
+  #viewActionHandler = async (actionType, updateType, point) => {
+    this.#uiBlocker.block();
     switch (actionType) {
       case UserAction.UPDATE_POINT:
-        this.#pointsModel.update(updateType, update);
+        this.#pointPresenters.get(point.id).setSaving();
+        try {
+          await this.#pointsModel.update(updateType, point);
+        } catch {
+          this.#pointPresenters.get(point.id).setAborting();
+        }
         break;
+
       case UserAction.DELETE_POINT:
-        this.#pointsModel.delete(updateType, update);
+        this.#pointPresenters.get(point.id).setDeleting();
+        try {
+          await this.#pointsModel.delete(updateType, point);
+        } catch {
+          this.#pointPresenters.get(point.id).setAborting();
+        }
         break;
+
       case UserAction.ADD_POINT:
-        this.#pointsModel.add(updateType, update);
+        this.#newPointPresenter.setSaving();
+        try {
+          await this.#pointsModel.add(updateType, point);
+        } catch {
+          this.#newPointPresenter.setAborting();
+        }
         break;
     }
+    this.#uiBlocker.unblock();
   };
 
   #modelEventHandler = (updateType, data) => {
@@ -86,17 +112,19 @@ export default class TripPresenter {
       case UpdateType.PATCH:
         this.#pointPresenters.get(data.id).init(data);
         break;
+
       case UpdateType.MINOR:
         this.#clearTrip();
         this.#renderTrip();
         break;
+
       case UpdateType.MAJOR:
         this.#clearTrip({ resetSortType: true });
         this.#renderTrip();
         break;
+
       case UpdateType.INIT:
         this.#isError = data.isError;
-        // this.#isLoading = false;
         this.#isLoading = false;
         this.#clearTrip();
         this.#renderTrip();

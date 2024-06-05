@@ -31,7 +31,7 @@ export default class PointsApiService extends ApiService {
     const response = await this._load({
       url: 'points',
       method: Method.POST,
-      body: JSON.stringify(adaptToServer(point)),
+      body: JSON.stringify(adaptToServer(point, true)),
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 

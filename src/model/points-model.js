@@ -23,10 +23,10 @@ export default class PointsModel extends Observable {
       ]);
 
       const points = await this.#service.getPoints();
-      // console.log(points);
       this.#points = points.map(adaptToClient);
+
       this._notify(UpdateType.INIT, {isError: false});
-    } catch {
+    } catch(error) {
       this.#points = [];
       this._notify(UpdateType.INIT, {isError: true});
     }
@@ -50,7 +50,7 @@ export default class PointsModel extends Observable {
         ...this.#points.slice(index + 1),
       ];
       this._notify(updateType, adaptedPoint);
-    } catch {
+    } catch(error) {
       throw new Error('Can\'t update point');
     }
   }
@@ -58,16 +58,14 @@ export default class PointsModel extends Observable {
   async add(updateType, point) {
     try{
       const response = await this.#service.addPoint(point);
-      // console.log(response);
       const adaptedPoint = adaptToClient(response);
-      // console.log(adaptedPoint);
-      // const newPoint = {...point,/*adapted*/ id: crypto.randomUUID()};
       this.#points = [
         adaptedPoint,
         ...this.#points
       ];
-      this._notify(updateType, point/*adapted*/);
-    } catch {
+
+      this._notify(updateType, adaptedPoint);
+    } catch(error) {
       throw new Error('Can\'t add point');
     }
   }
@@ -75,17 +73,18 @@ export default class PointsModel extends Observable {
   async delete(updateType, point) {
     try {
       const index = this.#points.findIndex((p) => p.id === point.id);
-
       if (index === -1) {
         throw new Error('Can\'t delete unexisting point');
       }
+
       await this.#service.deletePoint(point);
       this.#points = [
         ...this.#points.slice(0, index),
         ...this.#points.slice(index + 1),
       ];
+
       this._notify(updateType);
-    } catch {
+    } catch(error) {
       throw new Error('Can\'t delete point');
     }
   }

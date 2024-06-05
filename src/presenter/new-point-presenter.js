@@ -52,16 +52,11 @@ export default class NewPointPresenter {
   };
 
   #handlePointEditFormSubmit = (point) => {
-    // console.log(point);
-    // // const newPoint = {...point, id: crypto.randomUUID()};
-    // // console.log(newPoint);
     this.#handleDataChange(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
       point
     );
-
-    this.destroy({ isCanceled: false });
   };
 
   #handlePointEditFormClose = () => {
@@ -73,5 +68,28 @@ export default class NewPointPresenter {
       evt.preventDefault();
       this.destroy();
     }
+  };
+
+  setSaving = () => {
+    this.#newPointComponent.updateElement({
+      networkState: {
+        isDisabled: true,
+        isSaving: true,
+      }
+    });
+  };
+
+  setAborting = () => {
+    this.#newPointComponent.shake(this.#resetFormState);
+  };
+
+  #resetFormState = () => {
+    this.#newPointComponent.updateElement({
+      networkState: {
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      }
+    });
   };
 }

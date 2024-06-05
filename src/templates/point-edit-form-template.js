@@ -67,11 +67,17 @@ function createOffersSelector({ offers, currentOffers }) {
 </section>` : '';
 }
 
-export function createPointEditFormTemplate ({point, pointOffers, destinations, editPointType}) {
-  // console.log(destinations);
+export function createPointEditFormTemplate ({state, pointOffers, destinations, editPointType}) {
+  const {point, networkState} = state;
+  const {isDisabled, isSaving, isDeleting} = networkState;
   const { basePrice, dateFrom, dateTo, offers, type } = point;
+
   const currentDestination = destinations.find((destination) => destination.id === point.destination);
   const currentOffers = pointOffers.find((offer) => offer.type === type)?.offers;
+
+  const saveButtonLabel = isSaving ? 'Saving...' : 'Save';
+  const deleteButtonLabel = isDeleting ? 'Deleting...' : 'Delete';
+  const isDisabledLabel = isDisabled ? 'disabled' : '';
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -106,8 +112,8 @@ export function createPointEditFormTemplate ({point, pointOffers, destinations, 
         </label>
         <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(basePrice.toString())}">
       </div>
-      <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">${editPointType === EditType.CREATING ? 'Cancel' : 'Delete'}</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabledLabel}>${saveButtonLabel}</button>
+      <button class="event__reset-btn" type="reset" ${isDisabledLabel}>${editPointType === EditType.CREATING ? 'Cancel' : deleteButtonLabel}</button>
       ${editPointType === EditType.EDITING ? `<button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>` : ''}

@@ -1,7 +1,3 @@
-// починить выбор даты, ограничения на выбор до/после
-
-// Выбор дополнительных опций влияет на общую стоимость путешествия. Стоимость точки маршрута, которую ввёл пользователь в соответствующее поле ввода, при этом не изменяется.
-
 import { DEFAULT_POINT, EditType } from '../consts.js';
 
 import { createPointEditFormTemplate } from '../templates/point-edit-form-template.js';
@@ -30,7 +26,13 @@ export default class PointEditFormView extends AbstractStatefulView{
     this.#handleEditFormDelete = onPointEditFormDelete;
     this.#editFormType = pointEditType;
 
-    this._setState(PointEditFormView.parsePointToState({point}));
+    const networkState = {
+      isDisabled: false,
+      isSaving: false,
+      isDeleting: false
+    };
+
+    this._setState({point, networkState});
     this._restoreHandlers();
   }
 
@@ -93,7 +95,7 @@ export default class PointEditFormView extends AbstractStatefulView{
 
   get template() {
     return createPointEditFormTemplate({
-      point: this._state.point,
+      state: this._state,
       pointOffers: this.#offers,
       destinations: this.#destinations,
       editPointType: this.#editFormType,
@@ -148,7 +150,7 @@ export default class PointEditFormView extends AbstractStatefulView{
 
   #deleteClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditFormDelete(PointEditFormView.parseStateToPoint(this._state));
+    this.#handleEditFormDelete(this._state.point);
   };
 
   #resetClickHandler = (evt) => {
@@ -158,7 +160,7 @@ export default class PointEditFormView extends AbstractStatefulView{
 
   #submitClickHandler = (evt) => {
     evt.preventDefault();
-    this.#handleEditFormSubmit(PointEditFormView.parseStateToPoint(this._state));
+    this.#handleEditFormSubmit(this._state.point);
   };
 
   #typeChangeHandler = (evt) => {
@@ -204,17 +206,21 @@ export default class PointEditFormView extends AbstractStatefulView{
     });
   };
 
+  get isDisabled() {
+    return this._state.networkState.isDisabled;
+  }
+
+  get isSaving() {
+    return this._state.networkState.isDisabled;
+  }
+
+  get isDeleting() {
+    return this._state.networkState.isDeleting;
+  }
+
   static parsePointToState = ({ point }) => ({ point });
   static parseStateToPoint = (state) => state.point;
 
-  //приколы в парсинге, не отображается список точек
-
-  // После сохранения точка маршрута располагается в списке точек маршрута в соответствии с датой начала события по этой точке.
-  // После сохранения изменений точка маршрута располагается в списке точек маршрута в порядке, определённом текущей сортировкой (по дате, по длительности или по стоимости).
   // В случае недоступности сервера вместо списка точек маршрута отображается сообщение: «Failed to load latest route information».
 
-  // При нажатии на кнопки «Save», «Delete» формируется запрос к серверу на добавление/изменение/удаление данных. На время выполнения запроса текст заголовка кнопки изменяется:
-  // «Save» -> «Saving...»
-  // «Delete» -> «Deleting...»
-  // Заголовки кнопок возвращаются в исходный вид после завершения запроса.
 }
