@@ -4,6 +4,7 @@ import { render, remove } from '../framework/render.js';
 
 import EmptyPointListView from '../view/empty-point-list-view.js';
 import PointListView from '../view/point-list-view.js';
+import LoadingView from '../view/loading-view.js';
 
 import PointPresenter from './point-presenter.js';
 import SortPresenter from './sort-presenter.js';
@@ -19,12 +20,15 @@ export default class TripPresenter {
 
   #currentSortType = SortType.DAY;
   #isCreating = false;
+  #isLoading = true;
+  #isError = false;
 
   #newPointButtonPresenter = null;
   #newPointPresenter = null;
   #sortPresenter = null;
   #pointPresenters = new Map();
 
+  #loadingComponent = new LoadingView();
   #pointsListComponent = new PointListView();
   #emptyPointListComponent = null;
 
@@ -91,29 +95,49 @@ export default class TripPresenter {
         this.#renderTrip();
         break;
       case UpdateType.INIT:
-        // this.#isLoadingError = data.isError;
+        this.#isError = data.isError;
         // this.#isLoading = false;
+        this.#isLoading = false;
         this.#clearTrip();
         this.#renderTrip();
         break;
     }
   };
 
+  #renderLoading() {
+    render(this.#loadingComponent, this.#tripContainer);
+  }
+
   #clearTrip = ({resetSortType = false} = {}) => {
     this.#clearPoints();
 
     remove(this.#emptyPointListComponent);
+
     if (this.#sortPresenter) {
       this.#sortPresenter.destroy();
       this.#sortPresenter = null;
     }
+
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;
     }
+
+    remove(this.#loadingComponent);
   };
 
 
   #renderTrip = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      this.#newPointButtonPresenter.disableButton();
+      return;
+    }
+    this.#newPointButtonPresenter.enableButton();
+    if (this.#isError) {
+      this.#clearTrip({ resetSortType: true });
+      return;
+    }
+
     if (!this.points.length && !this.#isCreating) {
       this.#renderEmptyList();
       return;

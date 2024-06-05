@@ -102,6 +102,7 @@ export function adaptToClient(point) {
     dateTo: point['date_to'],
     isFavorite: point['is_favorite'],
   };
+
   delete adaptedPoint['base_price'];
   delete adaptedPoint['date_from'];
   delete adaptedPoint['date_to'];
