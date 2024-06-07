@@ -1,22 +1,22 @@
-import { EditType, POINT_TYPES } from '../consts';
+import { EditType } from '../consts';
 import dayjs from 'dayjs';
 import he from 'he';
 import { getLastWord } from '../utils';
 
-function createEventItems(isDisabled) {
-  return POINT_TYPES.map((type) => (
+function createEventItems(offers, isDisabled) {
+  return offers.map(({type}) => (
     `<div class="event__type-item">
       <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${isDisabled ? 'disabled' : ''}>
       <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ type }</label>
     </div>`)).join('');
 }
 
-function createEventSelector(isDisabled) {
+function createEventSelector(offers, isDisabled) {
   return `<input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
   <div class="event__type-list">
     <fieldset class="event__type-group">
       <legend class="visually-hidden">Event type</legend>
-      ${ createEventItems(isDisabled) }
+      ${ createEventItems(offers, isDisabled) }
     </fieldset>
   </div>`;
 }
@@ -86,7 +86,7 @@ export function createPointEditFormTemplate ({state, pointOffers, destinations, 
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${ type }.png" alt="Event ${ type } icon">
         </label>
-        ${ createEventSelector(isDisabled) }
+        ${ createEventSelector(pointOffers, isDisabled) }
       </div>
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
