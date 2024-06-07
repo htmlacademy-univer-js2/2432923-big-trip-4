@@ -1,9 +1,7 @@
 import { remove, render, replace } from '../framework/render';
 import { filter } from '../utils';
 import { UpdateType } from '../consts';
-
 import FilterView from '../view/filter-view';
-
 
 export default class FilterPresenter {
   #filterContainer = null;
@@ -35,10 +33,10 @@ export default class FilterPresenter {
 
   init(){
     const prevFilterComponent = this.#filterComponent;
-
     this.#filterComponent = new FilterView({
       items: this.filters,
       onItemChange: this.#filterTypeChangeHandler,
+      currentFilter: this.#filterModel.get()
     });
 
     if (prevFilterComponent === null) {

@@ -1,6 +1,5 @@
 import { RenderPosition, render, remove } from '../framework/render';
 import { UserAction, UpdateType, EditType } from '../consts';
-
 import PointEditFormView from '../view/point-edit-form-view';
 
 export default class NewPointPresenter {
@@ -57,8 +56,6 @@ export default class NewPointPresenter {
       UpdateType.MINOR,
       point
     );
-
-    this.destroy({ isCanceled: false });
   };
 
   #handlePointEditFormClose = () => {
@@ -70,5 +67,28 @@ export default class NewPointPresenter {
       evt.preventDefault();
       this.destroy();
     }
+  };
+
+  setSaving = () => {
+    this.#newPointComponent.updateElement({
+      networkState: {
+        isDisabled: true,
+        isSaving: true,
+      }
+    });
+  };
+
+  setAborting = () => {
+    this.#newPointComponent.shake(this.#resetFormState);
+  };
+
+  #resetFormState = () => {
+    this.#newPointComponent.updateElement({
+      networkState: {
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      }
+    });
   };
 }

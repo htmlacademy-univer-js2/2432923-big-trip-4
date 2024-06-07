@@ -1,10 +1,8 @@
 import { Mode, UpdateType, UserAction, EditType } from '../consts';
 import { render, replace, remove } from '../framework/render';
 import { isMajorDifference } from '../utils';
-
 import PointView from '../view/point-view';
 import PointEditFormView from '../view/point-edit-form-view';
-
 
 export default class PointPresenter {
   #pointsListContainer = null;
@@ -89,7 +87,7 @@ export default class PointPresenter {
   };
 
   #onDocumentEscKeydown = (evt) => {
-    if (evt.key === 'Escape' || evt.key === 'Esc') {
+    if ((evt.key === 'Escape' || evt.key === 'Esc') && !this.#pointEditFormComponent.isDisabled) {
       evt.preventDefault();
       this.#pointEditFormComponent.reset(this.#point);
       this.#switchToPoint();
@@ -119,9 +117,11 @@ export default class PointPresenter {
   };
 
   #pointEditFormResetHandler = () => {
-    this.#pointEditFormComponent.reset(this.#point);
-    this.#switchToPoint();
-    document.removeEventListener('keydown', this.escKeydownHandler);
+    if (!this.#pointEditFormComponent.isDisabled) {
+      this.#pointEditFormComponent.reset(this.#point);
+      this.#switchToPoint();
+      document.removeEventListener('keydown', this.escKeydownHandler);
+    }
   };
 
   #pointEditFormSubmitHandler = (updatePoint) => {
@@ -133,7 +133,10 @@ export default class PointPresenter {
       updatePoint
     );
 
-    this.#switchToPoint();
+    if (!this.#pointEditFormComponent.isDisabled) {
+      this.#switchToPoint();
+    }
+
     document.removeEventListener('keydown', this.escKeydownHandler);
   };
 
@@ -145,4 +148,45 @@ export default class PointPresenter {
     );
   };
 
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditFormComponent.updateElement({
+        networkState: {
+          isDisabled: true,
+          isSaving: true,
+        }
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#pointEditFormComponent.updateElement({
+        networkState: {
+          isDisabled: true,
+          isDeleting: true,
+        }
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#pointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#pointEditFormComponent.updateElement({
+        networkState: {
+          isDisabled: false,
+          isSaving: false,
+          isDeleting: false,
+        }
+
+      });
+    };
+
+    this.#pointEditFormComponent.shake(resetFormState);
+  }
 }

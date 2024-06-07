@@ -17,16 +17,10 @@ function createOffersListTemplate(currentOffers, offers) {
 export function createPointTemplate (point, offersByPointType, destination){
   const { basePrice, dateFrom, dateTo, isFavorite, offers, type } = point;
   const favouriteClassname = isFavorite ? 'event__favorite-btn--active' : '';
-  // const days = getTimeInDays(dateFrom, dateTo);
-  // const hours = getTimeInHours(dateFrom, dateTo);
-  // const minutes = getTimeInMinutes(dateFrom, dateTo);
-
-  // const time = getTime(dateFrom, dateTo);
-  // console.log(time);
 
   return `<li class="trip-events__item">
   <div class="event">
-    <time class="event__date" datetime="${ dateFrom }">${ dayjs(dateFrom).format('DD MMM') }</time>
+    <time class="event__date" datetime="${ dateFrom }">${ dayjs(dateFrom).format('MMM DD') }</time>
     <div class="event__type">
       <img class="event__type-icon" width="42" height="42" src="img/icons/${ type }.png" alt="Event ${ type } icon">
     </div>
