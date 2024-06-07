@@ -123,7 +123,9 @@ export const EmptyListMessage = {
 };
 
 export const AUTHORIZATION = 'Basic ahsjdssdghidfghjvf838hekhu';
+
 export const END_POINT = 'https://21.objects.htmlacademy.pro/big-trip';
+
 export const Method = {
   PUT: 'PUT',
   GET: 'GET',

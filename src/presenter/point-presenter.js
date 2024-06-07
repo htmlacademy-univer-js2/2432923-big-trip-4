@@ -1,10 +1,8 @@
 import { Mode, UpdateType, UserAction, EditType } from '../consts';
 import { render, replace, remove } from '../framework/render';
 import { isMajorDifference } from '../utils';
-
 import PointView from '../view/point-view';
 import PointEditFormView from '../view/point-edit-form-view';
-
 
 export default class PointPresenter {
   #pointsListContainer = null;

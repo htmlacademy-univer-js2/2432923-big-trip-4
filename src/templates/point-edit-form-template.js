@@ -124,5 +124,3 @@ export function createPointEditFormTemplate ({state, pointOffers, destinations, 
   </form>
   </li>`;
 }
-
-

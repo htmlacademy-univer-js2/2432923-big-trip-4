@@ -4,6 +4,19 @@ import { SortType, TimePeriods } from './consts';
 import { FilterType } from './consts';
 dayjs.extend(duration);
 
+const getPointsDateDifference = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
+const getPointsPriceDifference = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
+const getPointsDurationDifference = (pointA, pointB) => {
+  const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
+  const durationB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
+  return durationB - durationA;
+};
+const sortMethod = {
+  [SortType.DAY]: (points) => points.sort(getPointsDateDifference),
+  [SortType.PRICE]: (points) => points.sort(getPointsPriceDifference),
+  [SortType.TIME]: (points) => points.sort(getPointsDurationDifference),
+};
+
 export const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
 export const getRandomInteger = (max, min = 0) =>Math.round((max - min) * Math.random() + min);
@@ -39,20 +52,6 @@ export function isPresentDate(dateFrom, dateTo) {
 
 export const updateItem = (items, update) =>
   items.map((item) => item.id === update.id ? update : item);
-
-const getPointsDateDifference = (pointA, pointB) => dayjs(pointA.dateFrom).diff(dayjs(pointB.dateFrom));
-const getPointsPriceDifference = (pointA, pointB) => pointB.basePrice - pointA.basePrice;
-const getPointsDurationDifference = (pointA, pointB) => {
-  const durationA = dayjs(pointA.dateTo).diff(dayjs(pointA.dateFrom));
-  const durationB = dayjs(pointB.dateTo).diff(dayjs(pointB.dateFrom));
-  return durationB - durationA;
-};
-
-const sortMethod = {
-  [SortType.DAY]: (points) => points.sort(getPointsDateDifference),
-  [SortType.PRICE]: (points) => points.sort(getPointsPriceDifference),
-  [SortType.TIME]: (points) => points.sort(getPointsDurationDifference),
-};
 
 export const sort = (points, sortType = SortType.DAY) => {
   if (!sortMethod[sortType]) {

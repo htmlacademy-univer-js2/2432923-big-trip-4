@@ -1,11 +1,8 @@
 import { DEFAULT_POINT, EditType } from '../consts.js';
-
 import { createPointEditFormTemplate } from '../templates/point-edit-form-template.js';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
-
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-
 
 export default class PointEditFormView extends AbstractStatefulView{
   #offers = null;
@@ -91,7 +88,6 @@ export default class PointEditFormView extends AbstractStatefulView{
     this.#setDatepickerFromHandler();
     this.#setDatepickerToHandler();
   };
-
 
   get template() {
     return createPointEditFormTemplate({

@@ -1,6 +1,5 @@
 import { RenderPosition, render, remove } from '../framework/render';
 import { UserAction, UpdateType, EditType } from '../consts';
-
 import PointEditFormView from '../view/point-edit-form-view';
 
 export default class NewPointPresenter {

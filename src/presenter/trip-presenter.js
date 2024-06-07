@@ -1,16 +1,13 @@
 import { sort, filter } from '../utils.js';
 import { UpdateType, UserAction, SortType, FilterType, TimeLimit } from '../consts.js';
 import { render, remove, RenderPosition, replace } from '../framework/render.js';
-
 import EmptyPointListView from '../view/empty-point-list-view.js';
 import PointListView from '../view/point-list-view.js';
 import LoadingView from '../view/loading-view.js';
 import ErrorView from '../view/error-view.js';
-
 import PointPresenter from './point-presenter.js';
 import SortPresenter from './sort-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
-
 import UiBlocker from '../framework/ui-blocker/ui-blocker';
 import TripInfoView from '../view/trip-info-view.js';
 

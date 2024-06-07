@@ -1,6 +1,5 @@
 import { SortType , enabledSortType} from '../consts';
 import { render, remove } from '../framework/render';
-
 import SortView from '../view/sort-view';
 
 export default class SortPresenter {
