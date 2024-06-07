@@ -11,7 +11,6 @@ export const getRandomInteger = (max, min = 0) =>Math.round((max - min) * Math.r
 export const getPointDuration = (dateFrom, dateTo) => {
   const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'minutes');
   const days = dayjs(dateTo).diff(dayjs(dateFrom), 'days');
-  //   console.log(pointDuration);
   if (pointDuration >= TimePeriods.MinInDay) {
     if (days >= 100) {
       return dayjs.duration(pointDuration, 'minutes').format(`${days}[D] HH[H] mm[M]`);
@@ -19,12 +18,6 @@ export const getPointDuration = (dateFrom, dateTo) => {
     else {
       return dayjs.duration(pointDuration, 'minutes').format('DD[D] HH[H] mm[M]');
     }
-    // const days = dayjs(dateTo).diff(dayjs(dateFrom), 'days');
-    // const hours = dayjs(dateTo).diff(dayjs(dateFrom), 'hours');
-    // const mins = dayjs(dateTo).diff(dayjs(dateFrom), 'minutes');
-    // console.log(days);
-    // return '';
-
   } else if (pointDuration >= TimePeriods.MinInHour) {
     return dayjs.duration(pointDuration, 'minutes').format('HH[H] mm[M]');
   }

@@ -32,6 +32,7 @@ export default class TripPresenter {
   #newPointPresenter = null;
   #sortPresenter = null;
   #pointPresenters = new Map();
+  #filterPresenter = null;
 
   #loadingComponent = new LoadingView();
   #pointsListComponent = new PointListView();
@@ -44,7 +45,7 @@ export default class TripPresenter {
     upperLimit: TimeLimit.UPPER_LIMIT
   });
 
-  constructor ({container, pointsModel, offersModel, destinationModel, filterModel, newPointButtonPresenter}) {
+  constructor ({container, pointsModel, offersModel, destinationModel, filterModel, newPointButtonPresenter, filterPresenter}) {
     this.#tripContainer = container.events;
     this.#infoContainer = container.tripInfo;
 
@@ -61,6 +62,7 @@ export default class TripPresenter {
       onDataChange: this.#viewActionHandler,
       onDestroy: this.#createNewPointButtonDestroyHandler,
     });
+    this.#filterPresenter = filterPresenter;
 
     this.#pointsModel.addObserver(this.#modelEventHandler);
     this.#filterModel.addObserver(this.#modelEventHandler);
@@ -203,9 +205,9 @@ export default class TripPresenter {
     }
 
     this.#renderSort();
-    // this.#renderEmptyList();
     this.#renderPointList();
     this.#renderPoints();
+    this.#filterPresenter.init();
 
   };
 

@@ -35,10 +35,10 @@ export default class FilterPresenter {
 
   init(){
     const prevFilterComponent = this.#filterComponent;
-
     this.#filterComponent = new FilterView({
       items: this.filters,
       onItemChange: this.#filterTypeChangeHandler,
+      currentFilter: this.#filterModel.get()
     });
 
     if (prevFilterComponent === null) {

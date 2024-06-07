@@ -27,7 +27,11 @@ const filterModel = new FilterModel();
 const newPointButtonPresenter = new NewPointButtonPresenter({
   newPointButtonContainer: container.tripInfo,
 });
-
+const filterPresenter = new FilterPresenter({
+  filterContainer: container.filter,
+  pointsModel,
+  filterModel
+});
 const tripPresenter = new TripPresenter({
   container: container,
   pointsModel,
@@ -35,17 +39,12 @@ const tripPresenter = new TripPresenter({
   destinationModel,
   filterModel,
   newPointButtonPresenter,
+  filterPresenter
 });
 
-const filterPresenter = new FilterPresenter({
-  filterContainer: container.filter,
-  pointsModel,
-  filterModel
-});
 
 newPointButtonPresenter.init({
   onClick: tripPresenter.createNewPointButtonClickHandler,
 });
 
 tripPresenter.init();
-filterPresenter.init();

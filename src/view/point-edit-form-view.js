@@ -34,8 +34,6 @@ export default class PointEditFormView extends AbstractStatefulView{
 
     this._setState({point, networkState});
     this._restoreHandlers();
-    // console.log(point);
-    // debugger;
   }
 
   removeElement = () => {
@@ -222,7 +220,4 @@ export default class PointEditFormView extends AbstractStatefulView{
 
   static parsePointToState = ({ point }) => ({ point });
   static parseStateToPoint = (state) => state.point;
-
-  // В случае недоступности сервера вместо списка точек маршрута отображается сообщение: «Failed to load latest route information».
-
 }
