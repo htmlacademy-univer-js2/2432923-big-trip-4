@@ -122,9 +122,8 @@ export default class PointEditFormView extends AbstractStatefulView{
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.dateFrom,
-        maxDate: this._state.dateTo,
-        minDate: null,
+        defaultDate: this._state.point.dateFrom,
+        maxDate: this._state.point.dateTo,
         onChange: this.#tripPointDateFromChangeHandler,
       },
     );
@@ -136,9 +135,8 @@ export default class PointEditFormView extends AbstractStatefulView{
       {
         enableTime: true,
         dateFormat: 'd/m/y H:i',
-        defaultDate: this._state.dateTo,
-        minDate: this._state.dateFrom,
-        maxDate: null,
+        defaultDate: this._state.point.dateTo,
+        minDate: this._state.point.dateFrom,
         onChange: this.#tripPointDateToChangeHandler,
       },
     );
