@@ -3,26 +3,26 @@ import dayjs from 'dayjs';
 import he from 'he';
 import { getLastWord } from '../utils';
 
-function createEventItems() {
+function createEventItems(isDisabled) {
   return POINT_TYPES.map((type) => (
     `<div class="event__type-item">
-      <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }">
+      <input id="event-type-${ type }-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${ type }" ${isDisabled ? 'disabled' : ''}>
       <label class="event__type-label  event__type-label--${ type }" for="event-type-${ type }-1">${ type }</label>
     </div>`)).join('');
 }
 
-function createEventSelector() {
-  return `<input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
+function createEventSelector(isDisabled) {
+  return `<input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox" ${isDisabled ? 'disabled' : ''}>
   <div class="event__type-list">
     <fieldset class="event__type-group">
       <legend class="visually-hidden">Event type</legend>
-      ${ createEventItems() }
+      ${ createEventItems(isDisabled) }
     </fieldset>
   </div>`;
 }
 
-function createDestinationList(destinations) {
-  return `<datalist id="destination-list-1">
+function createDestinationList(destinations, isDisabled) {
+  return `<datalist id="destination-list-1" ${isDisabled ? 'disabled' : ''}>
   ${ destinations.map((destination) => `<option value="${ destination.name }"></option>`).join('') }
   </datalist>`;
 }
@@ -77,7 +77,6 @@ export function createPointEditFormTemplate ({state, pointOffers, destinations, 
 
   const saveButtonLabel = isSaving ? 'Saving...' : 'Save';
   const deleteButtonLabel = isDeleting ? 'Deleting...' : 'Delete';
-  const isDisabledLabel = isDisabled ? 'disabled' : '';
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -87,14 +86,14 @@ export function createPointEditFormTemplate ({state, pointOffers, destinations, 
           <span class="visually-hidden">Choose event type</span>
           <img class="event__type-icon" width="17" height="17" src="img/icons/${ type }.png" alt="Event ${ type } icon">
         </label>
-        ${ createEventSelector() }
+        ${ createEventSelector(isDisabled) }
       </div>
       <div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
           ${ type }
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination-1" value="${currentDestination ? he.encode(currentDestination.name) : ''}" list="destination-list-1">
-        ${ createDestinationList(destinations) }
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination-1" value="${currentDestination ? he.encode(currentDestination.name) : ''}" list="destination-list-1" ${isDisabled ? 'disabled' : ''}>
+        ${ createDestinationList(destinations, isDisabled) }
       </div>
 
       <div class="event__field-group  event__field-group--time">
@@ -110,11 +109,11 @@ export function createPointEditFormTemplate ({state, pointOffers, destinations, 
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(basePrice.toString())}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(basePrice.toString())}" ${isDisabled ? 'disabled' : ''}>
       </div>
       <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${saveButtonLabel}</button>
       <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${editPointType === EditType.CREATING ? 'Cancel' : deleteButtonLabel}</button>
-      ${editPointType === EditType.EDITING ? `<button class="event__rollup-btn" type="button">
+      ${editPointType === EditType.EDITING ? `<button class="event__rollup-btn" type="button" ${isDisabled ? 'disabled' : ''}>
         <span class="visually-hidden">Open event</span>
       </button>` : ''}
     </header>
