@@ -289,5 +289,6 @@ export default class TripPresenter {
 
   #modeChangeHandler = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
+    this.#newPointPresenter.destroy();
   };
 }
