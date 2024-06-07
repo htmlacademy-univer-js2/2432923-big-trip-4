@@ -5,8 +5,6 @@ import OffersModel from './model/offers-model';
 import FilterModel from './model/filter-model';
 import FilterPresenter from './presenter/filter-presenter';
 import NewPointButtonPresenter from './presenter/new-point-button-presenter';
-import { RenderPosition, render } from './framework/render';
-import TripInfoView from './view/trip-info-view';
 import PointsApiService from './service/points-api-service';
 import { AUTHORIZATION, END_POINT } from './consts';
 
@@ -31,15 +29,13 @@ const newPointButtonPresenter = new NewPointButtonPresenter({
 });
 
 const tripPresenter = new TripPresenter({
-  tripContainer: container.events,
+  container: container,
   pointsModel,
   offersModel,
   destinationModel,
   filterModel,
   newPointButtonPresenter,
 });
-
-render(new TripInfoView(), container.tripInfo, RenderPosition.AFTERBEGIN);
 
 const filterPresenter = new FilterPresenter({
   filterContainer: container.filter,

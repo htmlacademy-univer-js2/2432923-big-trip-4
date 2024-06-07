@@ -34,6 +34,8 @@ export default class PointEditFormView extends AbstractStatefulView{
 
     this._setState({point, networkState});
     this._restoreHandlers();
+    // console.log(point);
+    // debugger;
   }
 
   removeElement = () => {
@@ -86,7 +88,7 @@ export default class PointEditFormView extends AbstractStatefulView{
 
     this.element
       .querySelector('.event__available-offers')
-      .addEventListener('change', this.#offerChangeHandler);
+      ?.addEventListener('change', this.#offerChangeHandler);
 
     this.#setDatepickerFromHandler();
     this.#setDatepickerToHandler();

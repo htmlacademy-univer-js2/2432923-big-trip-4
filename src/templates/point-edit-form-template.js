@@ -28,7 +28,7 @@ function createDestinationList(destinations) {
 }
 
 function createPicturesSection(pictures) {
-  return pictures ? `<div class="event__photos-container">
+  return pictures.length ? `<div class="event__photos-container">
     <div class="event__photos-tape">
       ${ pictures.map((picture) => (`<img class="event__photo" src="${ picture.src }" alt="${ picture.description }">`)).join('') }
     </div>
@@ -36,11 +36,11 @@ function createPicturesSection(pictures) {
 }
 
 function createCurrentDestinationBlock(currentDestination) {
-  return currentDestination ? `<section class="event__section  event__section--destination">
+  return (!currentDestination || (currentDestination.description.length === 0 && currentDestination.pictures.length === 0)) ? '' : `<section class="event__section  event__section--destination">
   <h3 class="event__section-title  event__section-title--destination">${ currentDestination.name }</h3>
   <p class="event__destination-description">${ currentDestination.description }</p>
   ${ createPicturesSection(currentDestination.pictures) }
-</section>` : '';
+</section>`;
 }
 
 function createOffersSelector({ offers, currentOffers }) {
@@ -59,7 +59,7 @@ function createOffersSelector({ offers, currentOffers }) {
     }).join('');
   }
 
-  return currentOffers ? `<section class="event__section  event__section--offers">
+  return currentOffers.length > 0 ? `<section class="event__section  event__section--offers">
   <h3 class="event__section-title  event__section-title--offers">Offers</h3>
   <div class="event__available-offers">
     ${createOfferItem()}
@@ -112,8 +112,8 @@ export function createPointEditFormTemplate ({state, pointOffers, destinations, 
         </label>
         <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${he.encode(basePrice.toString())}">
       </div>
-      <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabledLabel}>${saveButtonLabel}</button>
-      <button class="event__reset-btn" type="reset" ${isDisabledLabel}>${editPointType === EditType.CREATING ? 'Cancel' : deleteButtonLabel}</button>
+      <button class="event__save-btn  btn  btn--blue" type="submit" ${isDisabled ? 'disabled' : ''}>${saveButtonLabel}</button>
+      <button class="event__reset-btn" type="reset" ${isDisabled ? 'disabled' : ''}>${editPointType === EditType.CREATING ? 'Cancel' : deleteButtonLabel}</button>
       ${editPointType === EditType.EDITING ? `<button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Open event</span>
       </button>` : ''}
