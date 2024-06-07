@@ -16,6 +16,7 @@ const sortMethod = {
   [SortType.PRICE]: (points) => points.sort(getPointsPriceDifference),
   [SortType.TIME]: (points) => points.sort(getPointsDurationDifference),
 };
+const HUNDRED_DAYS = 100;
 
 export const getRandomArrayElement = (items) => items[Math.floor(Math.random() * items.length)];
 
@@ -25,7 +26,7 @@ export const getPointDuration = (dateFrom, dateTo) => {
   const pointDuration = dayjs(dateTo).diff(dayjs(dateFrom), 'minutes');
   const days = dayjs(dateTo).diff(dayjs(dateFrom), 'days');
   if (pointDuration >= TimePeriods.MinInDay) {
-    if (days >= 100) {
+    if (days >= HUNDRED_DAYS) {
       return dayjs.duration(pointDuration, 'minutes').format(`${days}[D] HH[H] mm[M]`);
     }
     else {
